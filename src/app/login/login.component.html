@@ -1,0 +1,42 @@
+<!-- CSSファイルが有効にならないのでここおに記載  -->
+<style>
+.navbar{
+  background-color: #ddd;
+}
+a {
+  color: black;
+}
+</style>
+
+<nav class="navbar navbar-expand-lg">
+  <!-- 1.アプリのアイコンと名称 -->
+  <a class="navbar-brand" href="#">
+      <h3>Business History Web</h3>
+  </a>
+</nav>
+<div class="container">
+  <h1>Login</h1>
+  <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+      <table>
+          <tr>
+              <td><label for="name">名前</label></td>
+              <td><input type="text" id="name" required [(ngModel)]="model.name" name="name" #name="ngModel">
+                  <span [hidden]="name.valid || name.pristine">
+                      名前を入力して下さい。
+                  </span></td>
+          </tr>
+          <tr>
+              <td><label for="password">パスワード</label></td>
+              <td><input type="text" id="password" required [(ngModel)]="model.password" name="password" #password="ngModel">
+                  <span [hidden]="password.valid || password.pristine">
+                          パスワードを入力して下さい。
+                      </span>
+              </td>
+          </tr>
+      </table>
+      <br>
+      <button class="btn btn-secondary" type="submit" [disabled]="!loginForm.form.valid">ログイン</button>
+      <br /> {{model.message}}
+  </form>
+  {{serviceProp}}
+</div>
