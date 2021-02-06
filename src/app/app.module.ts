@@ -7,14 +7,22 @@ import { AppComponent } from './app.component';
 import {NgbPaginationModule, NgbAlertModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { LoginComponent } from './login/login.component';
 import { MenuComponent } from './menu/menu.component';
-import { FormsModule }   from '@angular/forms';
+import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import { LoginService} from './service/login.service';
+import { SignupComponent } from './component/signup/signup.component';
+import { PetComponent } from './component/pet/pet.component';
+import { HomeComponent } from './component/home/home.component';
+import { HttpClientModule } from '@angular/common/http';
 
+/*
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     MenuComponent,
+    SignupComponent,
+    PetComponent,
+    HomeComponent,
   ],
 imports: [
   AppRoutingModule,
@@ -34,3 +42,23 @@ providers: [LoginService],
 bootstrap: [AppComponent]
 })
 export class AppModule { }
+******/
+@NgModule({
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    SignupComponent,
+    HomeComponent,
+    PetComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}

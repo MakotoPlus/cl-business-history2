@@ -1,0 +1,28 @@
+<button (click)="Pet()" class="btn btn-success mx-3 my-3">情報取得リクエスト</button>
+
+<div class="main" *ngIf="petsData">
+  <h2 class="list-title">ペット情報</h2>
+
+  <div class="table-responsive">
+    <table class="table table-sm table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>id</th>
+          <th>type</th>
+          <th>price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let pet of petsData; index as i;">
+          <tr>
+            <td>{{i+1}}</td>
+            <td>{{pet.id}}</td>
+            <td>{{pet.type}}</td>
+            <td>{{pet.price}}</td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</div>

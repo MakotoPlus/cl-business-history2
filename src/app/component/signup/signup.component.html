@@ -1,0 +1,51 @@
+<div class="card text-center w-50 mx-auto">
+  <div class="card-header">
+    サインアップ
+  </div>
+  <div class="card-body">
+
+    <div class="signup" *ngIf="!successfullySignup">
+      <form [formGroup]="signupForm" (ngSubmit)="onSubmitSignup(signupForm.value)">
+
+        <div class="form-group text-left">
+          <label>メールアドレス</label>
+          <input type="email" class="form-control" placeholder="Enter email" formControlName="email">
+        </div>
+        <div class="form-group text-left">
+          <label>姓</label>
+          <input type="text" class="form-control" placeholder="姓" formControlName="family_name">
+        </div>
+        <div class="form-group text-left">
+          <label>名</label>
+          <input type="text" class="form-control" placeholder="名" formControlName="given_name">
+        </div>
+        <div class="form-group text-left">
+          <label>パスワード</label>
+          <input type="password" class="form-control" placeholder="Password" formControlName="password">
+        </div>
+        <button type="submit" class="btn btn-primary">登録</button>
+      </form>
+    </div>
+
+    <p class="mt-5" *ngIf="!successfullySignup">検証コードを入力する場合はこちら</p>
+    <button (click)="successfullySignup = true" *ngIf="!successfullySignup" class="btn btn-secondary">検証コードで認証</button>
+
+    <div class="confirmation" *ngIf="successfullySignup">
+      <form [formGroup]="confirmationForm" (ngSubmit)="onSubmitConfirmation(confirmationForm.value)">
+        <div class="form-group text-left">
+          <label>メールアドレス</label>
+          <input type="email" class="form-control" placeholder="Enter email" formControlName="email">
+        </div>
+
+
+        <div class="form-group text-left">
+          <label>検証コード</label>
+          <input type="email" class="form-control" placeholder="Enter confirmationCode" formControlName="confirmationCode">
+        </div>
+        <button type="submit" class="my-3 btn btn-primary">認証</button>
+      </form>
+      <button (click)="successfullySignup = false" class="btn btn-secondary">もどる</button>
+    </div>
+
+  </div>
+</div>
