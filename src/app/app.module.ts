@@ -1,14 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
-import { RouterModule }   from '@angular/router';
+//import { RouterModule }   from '@angular/router';
+//import {NgbPaginationModule, NgbAlertModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+//import { LoginComponent } from './login/login.component';
+//import { MenuComponent } from './menu/menu.component';
+//import { LoginService} from './service/login.service';
 import { AppComponent } from './app.component';
-import {NgbPaginationModule, NgbAlertModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import { LoginComponent } from './login/login.component';
-import { MenuComponent } from './menu/menu.component';
+import { LoginComponent } from './component/login/login.component';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
-import { LoginService} from './service/login.service';
 import { SignupComponent } from './component/signup/signup.component';
 import { PetComponent } from './component/pet/pet.component';
 import { HomeComponent } from './component/home/home.component';
