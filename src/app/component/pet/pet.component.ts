@@ -10,15 +10,19 @@ import { Pet } from '../pet';
 })
 export class PetComponent implements OnInit {
   private token: string;
+  username: String;
   petsData: Pet[];
-  constructor(private petService: PetService, private auth: AuthService) {}
+  constructor(private petService: PetService
+    , private auth: AuthService
+    ) {}
+
 
   ngOnInit() {
     //this.token = this.auth.getIdToken();
     this.auth.getIdToken().then( token => {
       this.token = token;
     });
-  }
+}
 
   Pet(): void {
     this.petService.getPets(this.token).subscribe(result => {

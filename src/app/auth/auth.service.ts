@@ -5,6 +5,7 @@ import { map, tap, catchError } from 'rxjs/operators';
 import Amplify, { Auth } from 'aws-amplify';
 import { SignUpParams } from '@aws-amplify/auth/lib-esm/types';
 import { environment } from './../../environments/environment';
+import { CognitoUserSession } from 'amazon-cognito-identity-js';
 //import { FunctionCall } from '@angular/compiler';
 //import {AuthenticationDetails, CognitoUser, CognitoIdToken, CognitoUserSession, CognitoUserAttribute} from "amazon-cognito-identity-js";
 
@@ -16,9 +17,11 @@ import { environment } from './../../environments/environment';
 export class AuthService {
   loggedIn: BehaviorSubject<boolean>;
   password: String;
-  family_name: String;
-  given_name: String;
-  email : String;
+  public session : CognitoUserSession;
+  public family_name: String;
+  public given_name: String;
+  public email : String;
+
   signUpParams : SignUpParams;
 
   constructor(private router: Router) {
@@ -26,7 +29,7 @@ export class AuthService {
     this.loggedIn = new BehaviorSubject<boolean>(false);
   }
 
-  signup_data : any;
+  //signup_data : any;
 
   /** サインアップ */
   public signUp(email : string , password : string ,family_name : string ,given_name : string ): Observable<any> {
@@ -44,7 +47,7 @@ export class AuthService {
           }
     };
     console.log('no log--------01?');
-    console.log(this.signUpParams);
+    //console.log(this.signUpParams);
     console.log('signUp Call OK111!');
     let abc  =  Auth.signUp(this.signUpParams);
     console.log('signUp Call OK333!');
@@ -66,6 +69,7 @@ export class AuthService {
 
   /** ログインユーザ情報の取得 */
   public getData(): Observable<any> {
+    //public getData(): Observable<CognitoUserSession> {
     return from(Auth.currentAuthenticatedUser());
   }
 
@@ -73,16 +77,14 @@ export class AuthService {
   public getIdToken(): Promise<string> {
     return Auth.currentSession()
       .then(session => {
+        /**
         console.log('getIdToken::then');
         console.log(session);
         console.log('getIdToken::payload');
         let payload = session.getIdToken().payload;
         console.log(payload);
-        /**
-        this.email = payload['email'];
-        this.given_name = payload['given_name'];
-        this.family_name = payload['family_name'];
          */
+        this.session = session;
         return session.getIdToken().getJwtToken();
       })
       .catch( e => {
@@ -95,8 +97,10 @@ export class AuthService {
 
   /** ログイン状態の取得 */
   public isAuthenticated(): Observable<boolean> {
+    console.log('isAuthenticated');
     return from(Auth.currentAuthenticatedUser()).pipe(
       map(result => {
+        console.log(result);
         this.loggedIn.next(true);
         return true;
       }),
