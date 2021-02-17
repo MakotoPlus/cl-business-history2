@@ -23,6 +23,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   username: String;
   loggedIn: boolean;
   session : CognitoUserSession;
+  title = 'cl-business-history2';
 
   constructor(public auth: AuthService, private cdr: ChangeDetectorRef
     ,private loginService : LoginService) {
