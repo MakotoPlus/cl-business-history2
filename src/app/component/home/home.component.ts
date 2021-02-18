@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 // サービスを登録するための import
 // アプリ全体でのサービスの共有､コンポーネント単位でのサービスの共有に関わらず､ここの import は必要
 import { LoginService } from '../../service/login.service';
+import {IfUserinfo} from '../../interface/userinfo';
 
 @Component({
   selector: 'app-home',
@@ -15,6 +16,9 @@ import { LoginService } from '../../service/login.service';
 export class HomeComponent implements OnInit {
   username: String;
   subscriptionLogin: Subscription;
+
+  user_info : IfUserinfo;
+
 
   constructor(private auth: AuthService
     ,private loginService : LoginService
@@ -35,8 +39,11 @@ export class HomeComponent implements OnInit {
   getData(): void {
     this.auth.getData().subscribe(
       result => {
+        console.log(result);
+        //this.user_info.family_name = result.attributes.family_name;
         this.username = result.attributes.family_name + ' ' + result.attributes.given_name;
-        this.loginService.onNotifySharedDataChanged(String(this.username));
+        //this.loginService.onNotifySharedDataChanged(String(this.username));
+        //this.loginService.onNotifySharedDataChanged(result);
       },
       error => {
         console.log('HomeComponent::getData()');

@@ -49,7 +49,7 @@ export class AppModule { }
     LoginComponent,
     SignupComponent,
     HomeComponent,
-    PetComponent
+    PetComponent,
   ],
   imports: [
     BrowserModule,

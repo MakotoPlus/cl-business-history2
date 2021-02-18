@@ -8,25 +8,32 @@ import { environment } from './../../environments/environment';
 import { CognitoUserSession } from 'amazon-cognito-identity-js';
 //import { FunctionCall } from '@angular/compiler';
 //import {AuthenticationDetails, CognitoUser, CognitoIdToken, CognitoUserSession, CognitoUserAttribute} from "amazon-cognito-identity-js";
-
+import { IfUserinfo } from './../interface/userinfo';
+import { User } from '../component/user';
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class AuthService {
-  loggedIn: BehaviorSubject<boolean>;
-  password: String;
+
+  loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  // これにするとユーザ情報は連携できているが、loggedIn(boolean)を参照しているapp.component.htmlが正しく動作しなくなるため
+  // 時間も遅いので一旦元に戻す。
+  //loggedIn: BehaviorSubject<IfUserinfo> = new BehaviorSubject<IfUserinfo>(new User());
+  //public loginState = this.loggedIn.asObservable();
+
+
+  //password: String;
   public session : CognitoUserSession;
-  public family_name: String;
-  public given_name: String;
-  public email : String;
+  public loginUser : User = new User();  // ログインユーザ情報
 
   signUpParams : SignUpParams;
 
   constructor(private router: Router) {
     Amplify.configure(environment.amplify);
-    this.loggedIn = new BehaviorSubject<boolean>(false);
+    //this.loggedIn = new BehaviorSubject<boolean>(false);
+    this.loginUser.clear();
   }
 
   //signup_data : any;
@@ -34,7 +41,6 @@ export class AuthService {
   /** サインアップ */
   public signUp(email : string , password : string ,family_name : string ,given_name : string ): Observable<any> {
   //public signUp(email : string , password : string): Observable<any> {
-
     console.log('no log--------?');
     this.signUpParams = {
         username: email
@@ -47,7 +53,6 @@ export class AuthService {
           }
     };
     console.log('no log--------01?');
-    //console.log(this.signUpParams);
     console.log('signUp Call OK111!');
     let abc  =  Auth.signUp(this.signUpParams);
     console.log('signUp Call OK333!');
@@ -63,7 +68,11 @@ export class AuthService {
   /** ログイン */
   public signIn(email, password): Observable<any> {
     return from(Auth.signIn(email, password)).pipe(
-      tap(() => this.loggedIn.next(true))
+      tap(() => {
+        //ここってTrueなの？
+        this.loggedIn.next(true)
+        //this.loggedIn.next(new User(true));
+      })
     );
   }
 
@@ -84,6 +93,7 @@ export class AuthService {
         let payload = session.getIdToken().payload;
         console.log(payload);
          */
+        console.log(session);
         this.session = session;
         return session.getIdToken().getJwtToken();
       })
@@ -100,11 +110,13 @@ export class AuthService {
     console.log('isAuthenticated');
     return from(Auth.currentAuthenticatedUser()).pipe(
       map(result => {
-        console.log(result);
+        //console.log(result);
+        this.loginUser.set(true, result);
         this.loggedIn.next(true);
         return true;
       }),
       catchError(error => {
+        this.loginUser.clear();
         this.loggedIn.next(false);
         return of(false);
       })
@@ -115,11 +127,13 @@ export class AuthService {
   public signOut() {
     from(Auth.signOut()).subscribe(
       result => {
+        this.loginUser.clear();
         this.loggedIn.next(false);
         this.router.navigate(['/login']);
       },
       error => {
         console.log('signOut()Error!!');
+        this.loginUser.clear();
         console.log(error);
       }
     );
