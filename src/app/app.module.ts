@@ -13,6 +13,15 @@ import { SignupComponent } from './component/signup/signup.component';
 import { PetComponent } from './component/pet/pet.component';
 import { HomeComponent } from './component/home/home.component';
 import { HttpClientModule } from '@angular/common/http';
+import { HistorylistComponent } from './component-main-tab/historylist/historylist.component';
+import { HistoryComponent } from './component-main-tab/history/history.component';
+import { JsonComponent } from './component-main-tab/json/json.component';
+import { ProfileComponent } from './component-sub01-tab/profile/profile.component';
+import { CompanyComponent } from './component-sub01-tab/company/company.component';
+import { ReportlistComponent } from './component-sub01-tab/reportlist/reportlist.component';
+import { MaintabCtlComponent } from './component-main-tab/maintab-ctl/maintab-ctl.component';
+import { Sub01tabCtlComponent } from './component-sub01-tab/sub01tab-ctl/sub01tab-ctl.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 /*
 @NgModule({
@@ -50,13 +59,22 @@ export class AppModule { }
     SignupComponent,
     HomeComponent,
     PetComponent,
+    HistorylistComponent,
+    HistoryComponent,
+    JsonComponent,
+    ProfileComponent,
+    CompanyComponent,
+    ReportlistComponent,
+    MaintabCtlComponent,
+    Sub01tabCtlComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

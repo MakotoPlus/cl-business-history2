@@ -1,0 +1,15 @@
+<ul ngbNav #nav="ngbNav"  [(activeId)]="activeTab"  class="nav-pills">
+  <li ngbNavItem="tab-history">
+    <a ngbNavLink>Profile</a>
+    <ng-template ngbNavContent ><app-profile></app-profile></ng-template>
+  </li>
+  <li ngbNavItem="tab-historylist">
+    <a ngbNavLink>Company</a>
+    <ng-template ngbNavContent ><app-company></app-company></ng-template>
+  </li>
+  <li ngbNavItem="tab-json">
+    <a ngbNavLink>Report List</a>
+    <ng-template ngbNavContent ><app-profilelist></app-profilelist></ng-template>
+  </li>
+</ul>
+<div [ngbNavOutlet]="nav"></div>

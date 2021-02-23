@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { USERINFO } from '../mok-data';
+//import { USERINFO } from '../mok-data';
 import { IfUserinfo } from '../interface/userinfo';
 import { Observable, of, Subject } from 'rxjs';
 

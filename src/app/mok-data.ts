@@ -2,7 +2,7 @@
 // ローカルモックデータ
 import { IfUserinfo } from './interface/userinfo';
 import {AppSettings} from './appsettings';
-
+/*
 export const USERINFO : IfUserinfo ={
     isLogin: false,
     id_user: 101,
@@ -16,3 +16,4 @@ export const USERINFO : IfUserinfo ={
     company_name: '企業',
     authority: AppSettings.AUTHORITY_ADMIN
 };
+*/

@@ -27,6 +27,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   //session : CognitoUserSession;
   title = 'cl-business-history2';
   loggedIn : boolean = false;
+  loginuser : User;
+
 
   constructor(public auth: AuthService, private cdr: ChangeDetectorRef
     ,private loginService : LoginService) {
@@ -40,6 +42,25 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   ngOnInit() {
     this.subscription = this.auth.isAuthenticated().subscribe(result => {
+      //ユーザ情報取得
+      //this.auth.getData().subscribe(result => {
+      //  this.username = result.attributes.family_name + ' ' + result.attributes.given_name;
+      console.log('AppComponent::ngOnInit');
+      console.log(result);
+      if (result){
+        console.log("AppComponent::login!!")
+        //this.loginuser = result;
+        console.log( this.auth.loginUser)
+        this.loggedIn = result;
+      }else{
+        console.log("AppComponent::logout....")
+        this.auth.loginUser.clear();
+        this.loggedIn = false;
+      }
+
+    });
+    /*
+    this.subscription = this.auth.isAuthenticated().subscribe(result => {
       //this.loggedIn = result;
       //ユーザ情報取得
       //this.auth.getData().subscribe(result => {
@@ -51,10 +72,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
     //  console.log("AppComponent::login change " + login );
     //});
 
-
-    /*
-
-    this.auth.loginState.subscribe((login : User)=>{
+    */
+    this.auth.loggedIn.subscribe((login : User)=>{
       if (login){
         console.log("AppComponent::login!!")
         this.auth.loginUser = login;
@@ -66,7 +85,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.loggedIn = false;
       }
     });
-*/
+
     //--------------------------------------------------------
     // イベント登録
     // サービスで共有しているデータが更新されたら発火されるイベントをキャッチする

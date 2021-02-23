@@ -17,14 +17,14 @@ import { User } from '../component/user';
 
 export class AuthService {
 
-  loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  //loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   // これにするとユーザ情報は連携できているが、loggedIn(boolean)を参照しているapp.component.htmlが正しく動作しなくなるため
   // 時間も遅いので一旦元に戻す。
-  //loggedIn: BehaviorSubject<IfUserinfo> = new BehaviorSubject<IfUserinfo>(new User());
+  loggedIn: BehaviorSubject<IfUserinfo> = new BehaviorSubject<IfUserinfo>(new User());
   //public loginState = this.loggedIn.asObservable();
 
 
-  //password: String;
+  password: String;
   public session : CognitoUserSession;
   public loginUser : User = new User();  // ログインユーザ情報
 
@@ -67,13 +67,19 @@ export class AuthService {
 
   /** ログイン */
   public signIn(email, password): Observable<any> {
+    return from(Auth.signIn(email, password).then((result) =>{
+      console.log('sigIn Success');
+      this.loginUser.set(true, result);
+      this.loggedIn.next(this.loginUser);
+    }));
+    /*********************
+  public signIn(email, password): Observable<any> {
     return from(Auth.signIn(email, password)).pipe(
       tap(() => {
-        //ここってTrueなの？
         this.loggedIn.next(true)
-        //this.loggedIn.next(new User(true));
       })
     );
+    */
   }
 
   /** ログインユーザ情報の取得 */
@@ -105,19 +111,42 @@ export class AuthService {
   }
 
 
-  /** ログイン状態の取得 */
+  /** ログイン状態の取得
+  public isAuthenticated(): Observable<IfUserinfo> {
+    console.log('isAuthenticated');
+    return from(Auth.currentAuthenticatedUser()).pipe(
+      map(result => {
+        console.log('sigIn Success');
+        this.loginUser.set(true, result);
+        this.loggedIn.next(this.loginUser);
+        return this.loginUser;
+    }),
+    catchError(error => {
+      console.log( 'isAuthenticated::error');
+      console.log( error);
+      this.loginUser.clear();
+      this.loggedIn.next(this.loginUser);
+      //this.loggedIn.next(false);
+      //return of(false);
+      return of(this.loginUser);
+    })
+  );
+  }
+*/
   public isAuthenticated(): Observable<boolean> {
     console.log('isAuthenticated');
     return from(Auth.currentAuthenticatedUser()).pipe(
       map(result => {
         //console.log(result);
         this.loginUser.set(true, result);
-        this.loggedIn.next(true);
+        this.loggedIn.next(this.loginUser);
+        //this.loggedIn.next(true);
         return true;
       }),
       catchError(error => {
         this.loginUser.clear();
-        this.loggedIn.next(false);
+        this.loggedIn.next(this.loginUser);
+        //this.loggedIn.next(false);
         return of(false);
       })
     );
@@ -128,7 +157,8 @@ export class AuthService {
     from(Auth.signOut()).subscribe(
       result => {
         this.loginUser.clear();
-        this.loggedIn.next(false);
+        this.loggedIn.next(this.loginUser);
+        //this.loggedIn.next(false);
         this.router.navigate(['/login']);
       },
       error => {
