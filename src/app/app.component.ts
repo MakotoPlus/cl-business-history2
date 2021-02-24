@@ -48,7 +48,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
       console.log('AppComponent::ngOnInit');
       console.log(result);
       if (result){
-        console.log("AppComponent::login!!")
+        console.log("AppComponent::isAuthenticated.login!!")
         //this.loginuser = result;
         console.log( this.auth.loginUser)
         this.loggedIn = result;
@@ -75,12 +75,12 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
     */
     this.auth.loggedIn.subscribe((login : User)=>{
       if (login){
-        console.log("AppComponent::login!!")
+        console.log("AppComponent::subscribe.login!!")
         this.auth.loginUser = login;
         console.log( this.auth.loginUser)
         this.loggedIn = login.isLogin;
       }else{
-        console.log("AppComponent::logout....")
+        console.log("AppComponent::subscribe.logout....")
         this.auth.loginUser.clear();
         this.loggedIn = false;
       }
@@ -112,6 +112,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
    // this.cdr.detectChanges();
  }
 
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
     this.subscriptionLogin.unsubscribe();
@@ -120,6 +121,6 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   onClickLogout() {
     //this.username = '';
     this.auth.signOut();
-    this.loggedIn = false;
+    //this.loggedIn = false;
   }
 }

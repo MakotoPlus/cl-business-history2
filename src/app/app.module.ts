@@ -22,6 +22,10 @@ import { ReportlistComponent } from './component-sub01-tab/reportlist/reportlist
 import { MaintabCtlComponent } from './component-main-tab/maintab-ctl/maintab-ctl.component';
 import { Sub01tabCtlComponent } from './component-sub01-tab/sub01tab-ctl/sub01tab-ctl.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ForgotPasswordComponent } from './component/forgot-password/forgot-password.component';
+//import { ForgotPasswordSubmitComponent } from './component/forgot-password-submit/forgot-password-submit.component';
+import { EmailchangeComponent } from './component/emailchange/emailchange.component';
+import { UserinfoComponent } from './component/userinfo/userinfo.component';
 
 /*
 @NgModule({
@@ -67,6 +71,10 @@ export class AppModule { }
     ReportlistComponent,
     MaintabCtlComponent,
     Sub01tabCtlComponent,
+    ForgotPasswordComponent,
+    //ForgotPasswordSubmitComponent,
+    EmailchangeComponent,
+    UserinfoComponent,
   ],
   imports: [
     BrowserModule,

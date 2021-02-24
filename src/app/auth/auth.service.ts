@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, BehaviorSubject, from, of } from 'rxjs';
 import { map, tap, catchError } from 'rxjs/operators';
-import Amplify, { Auth } from 'aws-amplify';
+import Amplify, { Auth, auth0SignInButton } from 'aws-amplify';
 import { SignUpParams } from '@aws-amplify/auth/lib-esm/types';
 import { environment } from './../../environments/environment';
 import { CognitoUserSession } from 'amazon-cognito-identity-js';
@@ -39,7 +39,8 @@ export class AuthService {
   //signup_data : any;
 
   /** サインアップ */
-  public signUp(email : string , password : string ,family_name : string ,given_name : string ): Observable<any> {
+  public signUp(email : string , password : string
+    ,family_name : string ,given_name : string ): Observable<any> {
   //public signUp(email : string , password : string): Observable<any> {
     console.log('no log--------?');
     this.signUpParams = {
@@ -152,14 +153,24 @@ export class AuthService {
     );
   }
 
+  /** パスワード再設定の認証コード送信 */
+  public forgotPassword(userid : string) : Promise<any>{
+    return Auth.forgotPassword(userid);
+  }
+
+  /** パスワード再設定 */
+  public forgotPasswordSubmit(userid : string, verificationCode : string, newPassword : string ) : Promise<void> {
+    return Auth.forgotPasswordSubmit(userid, verificationCode, newPassword);
+  }
+
   /** ログアウト */
   public signOut() {
     from(Auth.signOut()).subscribe(
       result => {
-        this.loginUser.clear();
-        this.loggedIn.next(this.loginUser);
         //this.loggedIn.next(false);
         this.router.navigate(['/login']);
+        this.loginUser.clear();
+        this.loggedIn.next(this.loginUser);
       },
       error => {
         console.log('signOut()Error!!');

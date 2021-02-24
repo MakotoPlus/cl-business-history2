@@ -23,6 +23,7 @@ export class User implements IfUserinfo {
   }
 
   public clear(){
+    this.isLogin = false;
     this.id_user = 0;
     this.user_name = '';
     this.email = '';
