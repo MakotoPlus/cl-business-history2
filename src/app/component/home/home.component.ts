@@ -39,6 +39,7 @@ export class HomeComponent implements OnInit {
   getData(): void {
     this.auth.getData().subscribe(
       result => {
+        console.log('HomeComponent::getData()');
         console.log(result);
         //this.user_info.family_name = result.attributes.family_name;
         this.username = result.attributes.family_name + ' ' + result.attributes.given_name;

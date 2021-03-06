@@ -51,12 +51,13 @@ export class AuthService {
             ,'email': email
             ,'family_name': family_name
             ,'given_name': given_name
+            ,'custom:admin': '0'
           }
     };
     console.log('no log--------01?');
     console.log('signUp Call OK111!');
     let abc  =  Auth.signUp(this.signUpParams);
-    console.log('signUp Call OK333!');
+    console.log(this.signUpParams);
     return from(abc);
   }
 

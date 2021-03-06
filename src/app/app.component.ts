@@ -21,7 +21,7 @@ import { User } from './component/user';
 //}
 export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   subscription: Subscription;
-  subscriptionLogin: Subscription;
+  //subscriptionLogin: Subscription;
   //username: String;
   //loggedIn: boolean;
   //session : CognitoUserSession;
@@ -115,7 +115,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
-    this.subscriptionLogin.unsubscribe();
+    //this.subscriptionLogin.unsubscribe();
   }
 
   onClickLogout() {
