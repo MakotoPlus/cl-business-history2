@@ -5,62 +5,7 @@ import { AuthService } from './../../auth/auth.service';
 import { LoginService } from '../../service/login.service';
 import { User } from '../../component/user';
 import { NgbModal,NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-
-@Component({
-  selector: 'ngbd-modal-confirm',
-  template: `
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-title">Profile deletion</h4>
-    <button type="button" class="close" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <p><strong>Are you sure you want to delete <span class="text-primary">"John Doe"</span> profile?</strong></p>
-    <p>All information associated to this user profile will be permanently deleted.
-    <span class="text-danger">This operation can not be undone.</span>
-    </p>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>
-    <button type="button" class="btn btn-danger" (click)="modal.close('Ok click')">Ok</button>
-  </div>
-  `
-})
-export class NgbdModalConfirm {
-  constructor(public modal: NgbActiveModal) {}
-}
-/*
-@Component({
-  selector: 'ngbd-modal-confirm-autofocus',
-  template: `
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-title">Profile deletion</h4>
-    <button type="button" class="close" aria-label="Close button" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <p><strong>Are you sure you want to delete <span class="text-primary">"John Doe"</span> profile?</strong></p>
-    <p>All information associated to this user profile will be permanently deleted.
-    <span class="text-danger">This operation can not be undone.</span>
-    </p>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>
-    <button type="button" ngbAutofocus class="btn btn-danger" (click)="modal.close('Ok click')">Ok</button>
-  </div>
-  `
-})
-*/
-export class NgbdModalConfirmAutofocus {
-  constructor(public modal: NgbActiveModal) {}
-}
-
-const MODALS: {[name: string]: Type<any>} = {
-  focusFirst: NgbdModalConfirm,
-  autofocus: NgbdModalConfirmAutofocus
-};
+import { ModalService } from '../../service/modal.service';
 
 @Component({
   selector: 'app-userinfo',
@@ -72,7 +17,6 @@ export class UserinfoComponent implements OnInit {
   withAutofocus = `<button type="button" ngbAutofocus class="btn btn-danger"
       (click)="modal.close('Ok click')">Ok</button>`;
 
-  subscription: Subscription;
   subscriptionLogin: Subscription;
   loggedIn : boolean = false;
   loginuser : User;
@@ -85,21 +29,18 @@ export class UserinfoComponent implements OnInit {
   constructor(private auth: AuthService
     ,private loginService : LoginService
     ,private fb: FormBuilder
-    ,private _modalService: NgbModal
-    //,public modal: NgbActiveModal
-    //,private _modalService: NgbModal
-    //,private modalService: NgbModal
-    //,public modal: NgbActiveModal
+//    ,private _modalService: NgbModal
+    ,private modalService: ModalService
     ) {}
-
+/*
     open(name: string) {
       let ret = this._modalService.open(MODALS[name]);
       console.log(ret);
     }
-
+*/
 
     ngOnInit() {
-   this.subscriptionLogin = this.auth.loggedIn.subscribe((login : User)=>{
+      this.subscriptionLogin = this.auth.loggedIn.subscribe((login : User)=>{
       if (login){
         //
         // ログイン情報取得
@@ -137,10 +78,27 @@ export class UserinfoComponent implements OnInit {
 
   }
 
+ /**
+   * クリックイベント
+   *
+   * @param {*} $event イベント情報
+   * @memberof AppComponent
+   */
+  public onClick($event: any) {
+    console.log('event');
+    console.log($event);
+    this.modalService.confirm('Title', 'Message').then( result => {
+      console.log('custom confirm');
+      console.log(result);
+
+    }).catch( error =>{
+      console.log('custom error');
+      console.log(error);
+    });
+  }
+
 
   ngOnDestroy() {
-    //this.subscription.unsubscribe();
-    this.subscriptionLogin.unsubscribe();
   }
 
 }

@@ -45,14 +45,24 @@
         </div>
         <br/>
         <div>
-
           <button type="submit" class="btn btn-primary" [disabled]="fmGroup.invalid">変更</button>
         </div>
+
       </form>
     </div>
   </div>
+<!--
 
   <button class="btn btn-outline-primary mr-2" (click)="open('focusFirst')">
     <div>Open confirm modal</div>
     <div class="text-dark" aria-hidden="true"><small>&times; button will be focused</small></div>
   </button>
+-->
+
+  <div class="footer">
+    <input id="footer_button" type="button" value="open modal" (click)="onClick($event);">
+  </div>
+  <!--
+  <ng-container *ngComponentOutlet="modal"></ng-container>
+-->
+  <ng-container *ngComponentOutlet="UserinfoModalComponent"></ng-container>
