@@ -14,9 +14,6 @@ import { ModalService } from '../../service/modal.service';
 })
 
 export class UserinfoComponent implements OnInit {
-  withAutofocus = `<button type="button" ngbAutofocus class="btn btn-danger"
-      (click)="modal.close('Ok click')">Ok</button>`;
-
   subscriptionLogin: Subscription;
   loggedIn : boolean = false;
   loginuser : User;
@@ -29,16 +26,8 @@ export class UserinfoComponent implements OnInit {
   constructor(private auth: AuthService
     ,private loginService : LoginService
     ,private fb: FormBuilder
-//    ,private _modalService: NgbModal
     ,private modalService: ModalService
     ) {}
-/*
-    open(name: string) {
-      let ret = this._modalService.open(MODALS[name]);
-      console.log(ret);
-    }
-*/
-
     ngOnInit() {
       this.subscriptionLogin = this.auth.loggedIn.subscribe((login : User)=>{
       if (login){
@@ -72,32 +61,14 @@ export class UserinfoComponent implements OnInit {
 
   onSubmit() {
     console.log(this.fmGroup.value);
-    Validators.required(this.fmGroup.value.email);
-    console.log(Validators.required(this.fmGroup.value.email));
-    //this.fmGroup.validator
-
-  }
-
- /**
-   * クリックイベント
-   *
-   * @param {*} $event イベント情報
-   * @memberof AppComponent
-   */
-  public onClick($event: any) {
-    console.log('event');
-    console.log($event);
-    this.modalService.confirm('Title', 'Message').then( result => {
+    this.modalService.confirm('ユーザ情報変更', '実行してよろしいですか？').then( result => {
       console.log('custom confirm');
-      console.log(result);
-
     }).catch( error =>{
       console.log('custom error');
       console.log(error);
     });
+
   }
-
-
   ngOnDestroy() {
   }
 

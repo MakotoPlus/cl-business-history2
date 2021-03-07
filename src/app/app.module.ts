@@ -26,7 +26,6 @@ import { ForgotPasswordComponent } from './component/forgot-password/forgot-pass
 //import { ForgotPasswordSubmitComponent } from './component/forgot-password-submit/forgot-password-submit.component';
 import { EmailchangeComponent } from './component/emailchange/emailchange.component';
 import { UserinfoComponent } from './component/userinfo/userinfo.component';
-import { UserinfoModalComponent } from './component/userinfo-modal/userinfo-modal.component';
 import { ModalConfirmComponent } from './component/common/modal-confirm/modal-confirm.component';
 
 /*
@@ -77,7 +76,6 @@ export class AppModule { }
     //ForgotPasswordSubmitComponent,
     EmailchangeComponent,
     UserinfoComponent,
-    UserinfoModalComponent,
     ModalConfirmComponent,
   ],
   imports: [
