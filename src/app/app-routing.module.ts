@@ -7,7 +7,7 @@ import { PetComponent } from './component/pet/pet.component';
 import { UserinfoComponent } from './component/userinfo/userinfo.component';
 import { AuthGuard } from './auth/auth.guard';
 import { ForgotPasswordComponent } from './component/forgot-password/forgot-password.component';
-//import { ForgotPasswordSubmitComponent } from './component/forgot-password-submit/forgot-password-submit.component';
+import { UserinfoDeleteComponent } from './component/userinfo-delete/userinfo-delete.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -16,6 +16,7 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'forgotPassword', component: ForgotPasswordComponent},
   { path: 'userinfo', component: UserinfoComponent, canActivate: [AuthGuard] },
+  { path: 'userdelete', component: UserinfoDeleteComponent, canActivate: [AuthGuard] },
   //{ path: 'forgotPasswordSubmit', component: ForgotPasswordSubmitComponent},
 ];
 

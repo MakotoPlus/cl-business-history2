@@ -7,6 +7,9 @@ import { CognitoUserSession } from 'amazon-cognito-identity-js';
 //import { debug } from 'console';
 import { IfUserinfo } from './interface/userinfo';
 import { User } from './component/user';
+import {MessageService} from './service/message.service';
+import {Alert} from './interface/Alert';
+
 
 @Component({
   //moduleId: module.id,
@@ -28,10 +31,14 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   title = 'cl-business-history2';
   loggedIn : boolean = false;
   loginuser : User;
+  //message : string = '';
+  messages : Alert[] = [];
 
-
-  constructor(public auth: AuthService, private cdr: ChangeDetectorRef
-    ,private loginService : LoginService) {
+  constructor(public auth: AuthService
+    , private cdr: ChangeDetectorRef
+    ,private loginService : LoginService
+    ,private messageServce : MessageService
+    ) {
     //this.username = localStorage.getItem(
     //  environment.localstorageBaseKey + 'LastAuthUser'
     //);
@@ -84,6 +91,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.auth.loginUser.clear();
         this.loggedIn = false;
       }
+    });
+    this.messageServce.messageState.subscribe((message:Alert)=>{
+      this.messages.push(message);
+      console.log(`Message output:${message}`);
     });
 
     //--------------------------------------------------------

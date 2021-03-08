@@ -27,6 +27,8 @@ import { ForgotPasswordComponent } from './component/forgot-password/forgot-pass
 import { EmailchangeComponent } from './component/emailchange/emailchange.component';
 import { UserinfoComponent } from './component/userinfo/userinfo.component';
 import { ModalConfirmComponent } from './component/common/modal-confirm/modal-confirm.component';
+import { UserinfoConfirmComponent } from './component/userinfo-confirm/userinfo-confirm.component';
+import { UserinfoDeleteComponent } from './component/userinfo-delete/userinfo-delete.component';
 
 /*
 @NgModule({
@@ -77,6 +79,8 @@ export class AppModule { }
     EmailchangeComponent,
     UserinfoComponent,
     ModalConfirmComponent,
+    UserinfoConfirmComponent,
+    UserinfoDeleteComponent,
   ],
   imports: [
     BrowserModule,

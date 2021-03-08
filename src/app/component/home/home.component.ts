@@ -16,6 +16,10 @@ import {IfUserinfo} from '../../interface/userinfo';
 export class HomeComponent implements OnInit {
   username: String;
   subscriptionLogin: Subscription;
+  errmessage : string;
+  //message : string = '';
+
+  //messages : string[] = [];
 
   user_info : IfUserinfo;
 
@@ -35,7 +39,8 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.getData();
-}
+  }
+
   getData(): void {
     this.auth.getData().subscribe(
       result => {

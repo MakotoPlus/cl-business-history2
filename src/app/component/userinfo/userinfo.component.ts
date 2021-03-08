@@ -17,11 +17,12 @@ export class UserinfoComponent implements OnInit {
   subscriptionLogin: Subscription;
   loggedIn : boolean = false;
   loginuser : User;
-
   form_email : string;
   form_family_name : string;
   form_given_name : string;
   fmGroup : FormGroup;
+  successfullySignup : boolean = false;
+  old_email : string;
 
   constructor(private auth: AuthService
     ,private loginService : LoginService
@@ -61,14 +62,34 @@ export class UserinfoComponent implements OnInit {
 
   onSubmit() {
     console.log(this.fmGroup.value);
+
     this.modalService.confirm('ユーザ情報変更', '実行してよろしいですか？').then( result => {
       console.log('custom confirm');
+      //
+      //emailが変更されているか確認し変更されていない場合は、呼出しパラメータに設定しない。
+      //(まぁしても影響無いんだけど。。)
+      let email_param = undefined;
+      if ( this.loginuser.email != this.fmGroup.get('email').value ){
+        email_param = this.fmGroup.get('email').value;
+      }
+      this.auth.currentAuthenticatedUser(
+        this.fmGroup.get('family_name').value
+        ,this.fmGroup.get('given_name').value
+        ,this.successfullySignup
+        ,email_param
+      );
     }).catch( error =>{
       console.log('custom error');
       console.log(error);
     });
+  }
+
+  //
+  // ユーザ情報変更処理実行
+  onUpdateUserInfo(){
 
   }
+
   ngOnDestroy() {
   }
 

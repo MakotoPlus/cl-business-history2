@@ -10,6 +10,8 @@ import { CognitoUserSession } from 'amazon-cognito-identity-js';
 //import {AuthenticationDetails, CognitoUser, CognitoIdToken, CognitoUserSession, CognitoUserAttribute} from "amazon-cognito-identity-js";
 import { IfUserinfo } from './../interface/userinfo';
 import { User } from '../component/user';
+import { MessageService} from './../service/message.service';
+import {ConstType} from './../component/common/ConstType';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +32,7 @@ export class AuthService {
 
   signUpParams : SignUpParams;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private messageService : MessageService) {
     Amplify.configure(environment.amplify);
     //this.loggedIn = new BehaviorSubject<boolean>(false);
     this.loginUser.clear();
@@ -164,6 +166,102 @@ export class AuthService {
     return Auth.forgotPasswordSubmit(userid, verificationCode, newPassword);
   }
 
+  /** ユーザ情報変更 */
+  public currentAuthenticatedUser(family_name : string
+    , given_name : string, successfullySignup : boolean, email?:string ){
+    //パラメータ設定
+    let updateUserAttributesParam = {};
+    if (email == undefined){
+      updateUserAttributesParam = {
+        family_name : family_name,
+        given_name : given_name,
+      };
+    }else{
+      updateUserAttributesParam = {
+        family_name : family_name,
+        given_name : given_name,
+        email : email,
+        name : email
+      };
+    }
+    // 念のため最新ユーザ情報取得
+    Auth.currentAuthenticatedUser().then( current_user =>{
+      //console.log('currentUser');
+      //console.log(current_user);
+      //console.log('change-------------');
+      //console.log("Userinfo[" + email + "][" + family_name + "][" + given_name + "]");
+
+      Auth.updateUserAttributes(current_user,updateUserAttributesParam).then(value =>{
+        console.log('updateUserAttributes-OK');
+        console.log(value);
+        if (email != undefined){
+          successfullySignup = true;
+        }
+        this.messageService.Output(ConstType.TYPE.SUCCESS, 'ユーザ情報変更正常終了');
+      }).catch(error =>{
+        this.messageService.Output(ConstType.TYPE.DANGER, 'ユーザ情報変更失敗');
+        console.log('updateUserAttributes-ERROR');
+        console.log(error);
+      });
+    }).catch(error =>{
+      this.messageService.Output(ConstType.TYPE.DANGER, 'ユーザ情報変更失敗');
+      console.log('currentAuthenticatedUser-ERROR');
+      console.log(error);
+    });
+  }
+
+  /** 変更Eメールアドレスを有効化 */
+  public verifyAttribute(confirmationCode){
+    //Auth.currentUserInfo
+    Auth.currentUserPoolUser().then(cognitoUser =>{
+      Auth.verifyUserAttributeSubmit(cognitoUser, 'email', confirmationCode).then(
+        result =>{
+        console.log('verfyAttribute Success');
+        console.log(result);
+        this.messageService.Output(ConstType.TYPE.SUCCESS, '認証正常終了');
+      })
+      .catch((error) => {
+        this.messageService.Output(ConstType.TYPE.DANGER, '認証失敗');
+        console.log('verfyAttribute Error');
+        console.log(error);
+      })
+    }).catch((error) => {
+      this.messageService.Output(ConstType.TYPE.DANGER, '認証失敗');
+      console.log('verfyAttribute Error');
+      console.log(error);
+    });
+  }
+
+
+/*    }
+    Auth.verifyUserAttribute(
+      this.loginUser, confirmationCode,
+      {"email_verfied" : "true"}).then( result =>{
+        console.log('verfyAttribute Success');
+      }).catch(error =>{
+        console.log('verfyAttribute Error');
+        console.log(error);
+      });
+  }
+/*
+      }
+      this.currentUser.verifyAttribute("email", confirmationCode, {
+        onSuccess: (result) => {
+          console.log('email verification success')
+          var user = store.getters.user
+          user["email_verified"] = "true"
+          store.commit('setUser', user)
+
+          resolve(result)
+        },
+        onFailure: (err) => {
+          console.log('email verification failed')
+          reject(err)
+        }
+      })
+    })
+  }
+*/
   /** ログアウト */
   public signOut() {
     from(Auth.signOut()).subscribe(
