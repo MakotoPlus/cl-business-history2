@@ -1,5 +1,6 @@
 import { IfUserinfo } from './../interface/userinfo';
 import {AppSettings} from './../appsettings';
+import { CognitoUserSession } from 'amazon-cognito-identity-js';
 
 export class User implements IfUserinfo {
   public isLogin = false;
@@ -7,11 +8,12 @@ export class User implements IfUserinfo {
   public user_name = '';
   public email = '';
   public family_name = '';
-  public  given_name = '';
+  public given_name = '';
   public name = '';
   public sub = '';
   public id_company = 0;
   public company_name = '';
+  public idToken = '';
   public authority = AppSettings.AUTHORITY_USER;
 
   constructor(login? : boolean,  userinfo? :any){
@@ -33,6 +35,7 @@ export class User implements IfUserinfo {
     this.sub = '';
     this.id_company = 0;
     this.company_name = '';
+    this.idToken = '';
     this.authority = AppSettings.AUTHORITY_USER;
   }
 
@@ -42,12 +45,17 @@ export class User implements IfUserinfo {
     if ( userinfo == undefined){
       return;
     }
+    console.log('ログイン情報格納');
     console.log(userinfo);
     this.family_name = userinfo.attributes.family_name;
     this.given_name = userinfo.attributes.given_name;
     this.email = userinfo.attributes.email;
     this.sub = userinfo.attributes.sub;
     this.user_name = this.family_name + ' ' + this.given_name;
+    //token id 設定
+    if (userinfo.signInUserSession){
+      this.idToken = userinfo.signInUserSession.getIdToken().getJwtToken();
+    }
   }
 };
 

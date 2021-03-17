@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from './../../auth/auth.service';
+import {MessageService} from './../../service/message.service';
+import {ConstType} from './../../component/common/ConstType';
+import {Alert} from './../../interface/Alert';
 
 @Component({
   selector: 'app-signup',
@@ -16,6 +19,7 @@ export class SignupComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
+    private messageService : MessageService,
     private auth: AuthService
   ) {}
 
@@ -45,9 +49,11 @@ export class SignupComponent implements OnInit {
     //this.auth.signUp(email, password ).subscribe(
       result => {
         console.log('SignupComponent::onSubmitSignup() success');
+        this.messageService.Output(ConstType.TYPE.SUCCESS, 'ユーザ情報登録成功');
         this.successfullySignup = true;
       },
       error => {
+        this.messageService.Output(ConstType.TYPE.DANGER, `ユーザ情報登録変更失敗:${error.message}`);
         console.log('SignupComponent::onSubmitSignup() error');
         console.log(error);
       }
@@ -55,16 +61,34 @@ export class SignupComponent implements OnInit {
   }
 
   onSubmitConfirmation(value: any) {
-    const email = value.email,
-      confirmationCode = value.confirmationCode;
+    const email = value.email;
+    const confirmationCode = value.confirmationCode;
+    //
+    // 認証後のログイン実行がエラーになるため実行しないよう変更
+    this.auth.confirmSignUp(email, confirmationCode).subscribe(
+      result => {
+        this.messageService.Output(ConstType.TYPE.SUCCESS, '認証成功');
+        console.log('onSubmitConfirmation()::success');
+        this.router.navigate(['/']);
+      },
+      error => {
+        this.messageService.Output(ConstType.TYPE.DANGER, `認証失敗:${error.message}`);
+        console.log('onSubmitConfirmation()::error()');
+        console.log(error);
+      }
+    );
+  }
+  /*----------------------------------------------------
     this.auth.confirmSignUp(email, confirmationCode).subscribe(
       result => {
         this.auth.signIn(email, this.auth.password).subscribe(
           () => {
+            this.messageService.Output(ConstType.TYPE.SUCCESS, '認証成功');
             console.log('onSubmitConfirmation()::success');
             this.router.navigate(['/']);
           },
           error => {
+            this.messageService.Output(ConstType.TYPE.DANGER, `認証失敗:${error.message}`);
             console.log('onSubmitConfirmation()::error');
             console.log(error);
             this.router.navigate(['/login']);
@@ -72,9 +96,10 @@ export class SignupComponent implements OnInit {
         );
       },
       error => {
+        this.messageService.Output(ConstType.TYPE.DANGER, `認証失敗:${error.message}`);
         console.log('onSubmitConfirmation()::error()');
         console.log(error);
       }
     );
-  }
+  }----------------------------------------------------*/
 }

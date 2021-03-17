@@ -12,6 +12,7 @@ import { IfUserinfo } from './../interface/userinfo';
 import { User } from '../component/user';
 import { MessageService} from './../service/message.service';
 import {ConstType} from './../component/common/ConstType';
+//import {RestapiService} from './../service/restapi.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,10 +30,14 @@ export class AuthService {
   password: String;
   public session : CognitoUserSession;
   public loginUser : User = new User();  // ログインユーザ情報
+  public tokein : string;
 
   signUpParams : SignUpParams;
 
-  constructor(private router: Router, private messageService : MessageService) {
+  constructor(private router: Router
+    ,private messageService : MessageService
+    //,private restapiService :RestapiService
+    ) {
     Amplify.configure(environment.amplify);
     //this.loggedIn = new BehaviorSubject<boolean>(false);
     this.loginUser.clear();
@@ -70,20 +75,21 @@ export class AuthService {
   }
 
   /** ログイン */
-  public signIn(email, password): Observable<any> {
+  /*public signIn(email, password): Observable<any> {
     return from(Auth.signIn(email, password).then((result) =>{
       console.log('sigIn Success');
       this.loginUser.set(true, result);
       this.loggedIn.next(this.loginUser);
     }));
-    /*********************
+    */
   public signIn(email, password): Observable<any> {
     return from(Auth.signIn(email, password)).pipe(
-      tap(() => {
-        this.loggedIn.next(true)
+      tap((result) => {
+        this.loginUser.set(true, result);
+        this.loggedIn.next(this.loginUser);
+          //this.loggedIn.next(true)
       })
     );
-    */
   }
 
   /** ログインユーザ情報の取得 */
@@ -105,7 +111,8 @@ export class AuthService {
          */
         console.log(session);
         this.session = session;
-        return session.getIdToken().getJwtToken();
+        this.tokein = session.getIdToken().getJwtToken();
+        return this.tokein;
       })
       .catch( e => {
           console.log('getIdToken::error');

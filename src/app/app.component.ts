@@ -24,7 +24,8 @@ import {Alert} from './interface/Alert';
 //}
 export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   subscription: Subscription;
-  //subscriptionLogin: Subscription;
+  messageSubscription: Subscription;
+  subscriptionLogin: Subscription;
   //username: String;
   //loggedIn: boolean;
   //session : CognitoUserSession;
@@ -80,7 +81,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
     //});
 
     */
-    this.auth.loggedIn.subscribe((login : User)=>{
+    this.subscriptionLogin = this.auth.loggedIn.subscribe((login : User)=>{
       if (login){
         console.log("AppComponent::subscribe.login!!")
         this.auth.loginUser = login;
@@ -92,7 +93,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.loggedIn = false;
       }
     });
-    this.messageServce.messageState.subscribe((message:Alert)=>{
+    this.messageSubscription = this.messageServce.messageState.subscribe((message:Alert)=>{
       this.messages.push(message);
       console.log(`Message output:${message}`);
     });
@@ -126,7 +127,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
-    //this.subscriptionLogin.unsubscribe();
+    this.messageSubscription.unsubscribe();
+    this.subscriptionLogin.unsubscribe();
   }
 
   onClickLogout() {

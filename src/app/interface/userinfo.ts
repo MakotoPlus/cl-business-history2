@@ -10,6 +10,7 @@ export interface IfUserinfo {
   id_company: number,
   sub : string,
   company_name: string;
+  idToken : string;
   authority: number;  // 権限 99:権限 50:パワーユーザ 00:一般
   clear():void;
   set( login:boolean, userinfo?:any):void;

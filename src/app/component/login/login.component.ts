@@ -10,6 +10,9 @@ import { Subscription } from 'rxjs';
 import { LoginService } from '../../service/login.service';
 // @Output デコレータを使用するための import
 import { Output, EventEmitter } from '@angular/core';
+import {MessageService} from './../../service/message.service';
+import {ConstType} from './../../component/common/ConstType';
+import {Alert} from './../../interface/Alert';
 
 @Component({
   selector: 'app-login',
@@ -25,6 +28,7 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private auth: AuthService,
+    private messageService : MessageService,
     private loginService : LoginService
   ) {}
 
@@ -52,9 +56,9 @@ export class LoginComponent implements OnInit {
       error => {
         if ( error['code'] == 'InvalidParameterException' ||
           error['code'] == '"User does not exist."'){
-          this.errmessage = 'ユーザ名パスワードが違います';
+          this.messageService.Output(ConstType.TYPE.DANGER, 'ユーザ名パスワードが違います');
         } else{
-          this.errmessage = `エラーが発生しました。${error['code']}`;
+          this.messageService.Output(ConstType.TYPE.DANGER, `エラーが発生しました。${error['code']}`);
         }
         console.log('onSubmitLogin() error');
         console.log(error);
