@@ -29,6 +29,8 @@ import { UserinfoComponent } from './component/userinfo/userinfo.component';
 import { ModalConfirmComponent } from './component/common/modal-confirm/modal-confirm.component';
 import { UserinfoConfirmComponent } from './component/userinfo-confirm/userinfo-confirm.component';
 import { UserinfoDeleteComponent } from './component/userinfo-delete/userinfo-delete.component';
+import { MatIconModule } from '@angular/material/icon';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 /*
 @NgModule({
@@ -88,7 +90,9 @@ export class AppModule { }
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    NgbModule
+    NgbModule,
+    MatIconModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

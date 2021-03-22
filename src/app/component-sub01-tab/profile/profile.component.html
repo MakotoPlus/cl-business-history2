@@ -1,4 +1,5 @@
 
+
 <form [formGroup]="fmGroup" (ngSubmit)="onSubmit()">
   <div class="input-group mb-2  mt-2">
     <div class="input-group-prepend">
@@ -6,11 +7,23 @@
     </div>
     <input type="text" class="form-control" formControlName="family_name" >
   </div>
+  <div *ngIf="family_name.invalid && (family_name.dirty || family_name.touched)"
+    class="alert alert-danger">
+    <div *ngIf="family_name.errors.required">
+      この項目は必須です
+    </div>
+  </div>
   <div class="input-group mb-2  mt-2">
     <div class="input-group-prepend">
       <span class="input-group-text">&nbsp;&nbsp;&nbsp;名&nbsp;&nbsp;</span>
     </div>
     <input type="text" class="form-control" formControlName="given_name" >
+  </div>
+  <div *ngIf="given_name.invalid && (given_name.dirty || given_name.touched)"
+    class="alert alert-danger">
+    <div *ngIf="given_name.errors.required">
+      この項目は必須です
+    </div>
   </div>
   <div class="input-group mb-2  mt-2">
     <div class="input-group-prepend">
@@ -30,41 +43,63 @@
     </div>
     <input type="text" class="form-control" formControlName="initial" >
   </div>
+  <div class="input-group mb-2  mt-2">
+    <div class="input-group-prepend">
+      <span class="input-group-text">&nbsp;性別&nbsp; </span>
+    </div>
+    <input type="text" class="form-control" placeholder="男 or 女 etc" formControlName="sex" >
+  </div>
   <div class="input-group mb-2 ">
     <div class="input-group-prepend">
       <span class="input-group-text">誕生日</span>
     </div>
-    <input type="text" class="form-control date" data-provide="datepicker"  formControlName="birthday">
+    <!--
+    <input class="form-control bg-white date" placeholder="yyyy-mm-dd"
+            name="dp" [(ngModel)]="model"  navigation="arrows"
+            ngbDatepicker #d="ngbDatepicker" formControlName="birthday" readonly>
+    -->
+    <input class="form-control bg-white date" placeholder="yyyy-mm-dd"
+            name="dp" [(ngModel)]="model"
+            ngbDatepicker #d="ngbDatepicker" formControlName="birthday" readonly>
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><mat-icon>calendar_today</mat-icon></button>
+    </div>
   </div>
   <div class="input-group mb-2">
     <div class="input-group-prepend">
-      <span class="input-group-text">学　歴</span>
+      <span class="input-group-text">住　所</span>
     </div>
-    <input type="text" class="form-control" placeholder="XXXX学校卒業"  aria-label="date_joined" aria-describedby="date_joined" formControlName="date_joined">
-  </div>
-  <div class="input-group mb-2">
-    <div class="input-group-prepend">
-      <span class="input-group-text">資　格</span>
-    </div>
-    <input type="text" class="form-control" placeholder="基本情報処理"  aria-label="qualifications" aria-describedby="qualifications" formControlName="qualifications">
+    <input type="text" class="form-control" placeholder="Tokyo"  aria-label="address" aria-describedby="address" formControlName="address">
   </div>
   <div class="input-group mb-2">
     <div class="input-group-prepend">
       <span class="input-group-text">電　車</span>
     </div>
-    <input type="text" class="form-control" placeholder="山手線"  aria-label="train" aria-describedby="train" formControlName="train">
+    <input type="text" class="form-control" placeholder=""  aria-label="train" aria-describedby="train" formControlName="train">
   </div>
   <div class="input-group mb-2">
     <div class="input-group-prepend">
       <span class="input-group-text">最寄駅</span>
     </div>
-    <input type="text" class="form-control" placeholder="東京"  aria-label="station" aria-describedby="station" formControlName="station">
+    <input type="text" class="form-control" placeholder=""  aria-label="station" aria-describedby="station" formControlName="station">
   </div>
   <div class="input-group mb-2">
-  <div class="input-group-prepend">
-    <span class="input-group-text">Ｐ　Ｒ</span>
+    <div class="input-group-prepend">
+      <span class="input-group-text">学　歴</span>
+    </div>
+    <input type="text" class="form-control" placeholder=""  aria-label="date_joined" aria-describedby="date_joined" formControlName="date_joined">
   </div>
-  <textarea class="form-control" rows="8" aria-label="With textarea"  formControlName="pr"></textarea>
+  <div class="input-group mb-2">
+    <div class="input-group-prepend">
+      <span class="input-group-text">資　格</span>
+    </div>
+    <textarea class="form-control" rows="3" aria-label="With textarea"  formControlName="qualifications"></textarea>
+  </div>
+  <div class="input-group mb-2">
+    <div class="input-group-prepend">
+      <span class="input-group-text">Ｐ　Ｒ</span>
+    </div>
+    <textarea class="form-control" rows="4" aria-label="With textarea"  formControlName="pr"></textarea>
   </div>
   <div class="row mt-3 ml-1">
     <div>
@@ -72,17 +107,3 @@
     </div>
   </div>
 </form>
-<script>
-$('.form-control.date').datepicker({
-    format: "yyyy/mm/dd",
-	language: 'ja'
-
-});
-
-  $('.datepicker').datepicker(
-	{
-		format: 'yyyy/mm/dd',
-		language: 'ja'
-	}
-);
-</script>
