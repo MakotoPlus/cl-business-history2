@@ -73,8 +73,8 @@ export class ProfileComponent implements OnInit {
     // フォーム作成
     this.fmGroup = this.fb.group({
       initial : ['',[]]
-      ,family_name : ['',[Validators.required]]
-      ,given_name : ['',[Validators.required]]
+      //,family_name : ['',[Validators.required]]
+      //,given_name : ['',[Validators.required]]
       ,family_name_kana : ['',[]]
       ,given_name_kana : ['',[]]
       ,birthday : ['',[Validators.required]]
@@ -89,8 +89,8 @@ export class ProfileComponent implements OnInit {
     });
   }
   // html側でアクセスするメソッド
-  get family_name() {return this.fmGroup.get('family_name');}
-  get given_name() {return this.fmGroup.get('given_name');}
+  //get family_name() {return this.fmGroup.get('family_name');}
+  //get given_name() {return this.fmGroup.get('given_name');}
   get family_name_kana() {return this.fmGroup.get('family_name_kana');}
   get given_name_kana() {return this.fmGroup.get('given_name_kana');}
   get initial() {return this.fmGroup.get('initial');}
@@ -108,12 +108,12 @@ export class ProfileComponent implements OnInit {
     if ('initial' in r){
       this.initial.setValue(r.initial);
     }
-    if ('family_name' in r ){
-      this.family_name.setValue(r.family_name);
-    }
-    if ('given_name' in r ){
-      this.given_name.setValue(r.given_name);
-    }
+    //if ('family_name' in r ){
+    //  this.family_name.setValue(r.family_name);
+    //}
+    //if ('given_name' in r ){
+    //  this.given_name.setValue(r.given_name);
+    //}
     if ('family_name_kana' in r ){
       this.family_name_kana.setValue(r.family_name_kana);
     }
@@ -129,9 +129,6 @@ export class ProfileComponent implements OnInit {
           ,day : r.birthday.day
         }
       }
-    }
-    if ('family_name' in r ){
-      this.family_name.setValue(r.family_name);
     }
     if ('sex' in r ){
       this.sex.setValue(r.sex);

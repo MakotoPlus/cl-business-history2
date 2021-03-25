@@ -12,8 +12,8 @@ export const environment = {
       //dev-business-history
       //userPoolId: 'ap-northeast-1_PtYRHMaW9',
       //userPoolWebClientId: '124jmp6a4q3nem63vq38coercu'
-      userPoolId: 'ap-northeast-1_W42e6baUR',
-      userPoolWebClientId: '4m9tn4eh2pj3al5jmo6t808md'
+      userPoolId: 'ap-northeast-1_ALjpPz2jY',
+      userPoolWebClientId: '393j5an8njrqql3jjn69nhnh7b'
 
       //test-ampy
       //userPoolId: 'ap-northeast-1_unAwyh5IP',
@@ -22,11 +22,11 @@ export const environment = {
   },
   // API Gatewayのエンドポイントの設定
   //Business-History
-  apiBaseUrl: 'https://1csltzg0n2.execute-api.ap-northeast-1.amazonaws.com/dev',
+  apiBaseUrl: 'https://2xlv8nnd18.execute-api.ap-northeast-1.amazonaws.com/dev',
   // Localstorageの設定
   // localstorageBaseKey: 'CognitoIdentityServiceProvider.<userPoolWebClientIdの値>.'
   //Business-History
-  localstorageBaseKey: 'CognitoIdentityServiceProvider.4m9tn4eh2pj3al5jmo6t808md.'
+  localstorageBaseKey: 'CognitoIdentityServiceProvider.393j5an8njrqql3jjn69nhnh7b.'
   //----------------------------------------------------------------------
   //test-ampy
   // API Gatewayのエンドポイントの設定

@@ -49,7 +49,7 @@ export class SignupComponent implements OnInit {
     //this.auth.signUp(email, password ).subscribe(
       result => {
         console.log('SignupComponent::onSubmitSignup() success');
-        this.messageService.Output(ConstType.TYPE.SUCCESS, 'ユーザ情報登録成功');
+        this.messageService.Output(ConstType.TYPE.SUCCESS, 'ユーザ情報登録成功 認証コードをメールしました');
         this.successfullySignup = true;
       },
       error => {
