@@ -31,7 +31,7 @@ export class LoginService {
    */
   //public onNotifySharedDataChanged(updateed: string){
   public onNotifySharedDataChanged(updateed: any){
-    console.log('[LoginService] onNotifySharedDataChanged fired.');
+    console.debug('[LoginService] onNotifySharedDataChanged fired.');
     this.sharedDataSource.next(updateed);
     /*
     this.sharedDataSource.user_name = updateed.attributes.family_name + ' ' + updateed.attributes.given_name;

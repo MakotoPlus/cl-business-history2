@@ -10,5 +10,11 @@ export class ConstType {
     ,LIGHT : 'light'
     ,DARK : 'dark'
   };
+}
 
+export namespace HistoryType{
+  export const LANGUAGE = {value: '言語', name:'言語' };
+  export const FRAMEWORK = {value:'F/W', name:'F/W'};
+  export const DB = {value:'DB', name:'DB'};
+  export const OS = {value:'OS', name:'OS'};
 }

@@ -16,12 +16,7 @@ import {RestapiService} from '../../service/restapi.service';
 })
 export class HomeComponent implements OnInit {
   username: String;
-  subscriptionLogin: Subscription;
   errmessage : string;
-  //message : string = '';
-
-  //messages : string[] = [];
-
   user_info : IfUserinfo;
 
 
@@ -46,8 +41,8 @@ export class HomeComponent implements OnInit {
   getData(): void {
     this.auth.getData().subscribe(
       result => {
-        console.log('HomeComponent::getData()');
-        console.log(result);
+        console.debug('HomeComponent::getData()');
+        console.debug(result);
         //this.user_info.family_name = result.attributes.family_name;
         this.username = result.attributes.family_name + ' ' + result.attributes.given_name;
         //this.loginService.onNotifySharedDataChanged(String(this.username));

@@ -48,13 +48,13 @@ export class SignupComponent implements OnInit {
     this.auth.signUp(email, password,family_name,given_name ).subscribe(
     //this.auth.signUp(email, password ).subscribe(
       result => {
-        console.log('SignupComponent::onSubmitSignup() success');
+        console.debug('SignupComponent::onSubmitSignup() success');
         this.messageService.Output(ConstType.TYPE.SUCCESS, 'ユーザ情報登録成功 認証コードをメールしました');
         this.successfullySignup = true;
       },
       error => {
         this.messageService.Output(ConstType.TYPE.DANGER, `ユーザ情報登録変更失敗:${error.message}`);
-        console.log('SignupComponent::onSubmitSignup() error');
+        console.debug('SignupComponent::onSubmitSignup() error');
         console.log(error);
       }
     );
@@ -68,7 +68,7 @@ export class SignupComponent implements OnInit {
     this.auth.confirmSignUp(email, confirmationCode).subscribe(
       result => {
         this.messageService.Output(ConstType.TYPE.SUCCESS, '認証成功');
-        console.log('onSubmitConfirmation()::success');
+        console.debug('onSubmitConfirmation()::success');
         this.router.navigate(['/']);
       },
       error => {

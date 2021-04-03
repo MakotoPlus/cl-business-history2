@@ -49,7 +49,7 @@ export class AuthService {
   public signUp(email : string , password : string
     ,family_name : string ,given_name : string ): Observable<any> {
   //public signUp(email : string , password : string): Observable<any> {
-    console.log('no log--------?');
+    console.debug('no log--------?');
     this.signUpParams = {
         username: email
         ,password: password
@@ -61,10 +61,10 @@ export class AuthService {
             ,'custom:admin': '0'
           }
     };
-    console.log('no log--------01?');
-    console.log('signUp Call OK111!');
+    console.debug('no log--------01?');
+    console.debug('signUp Call OK111!');
     let abc  =  Auth.signUp(this.signUpParams);
-    console.log(this.signUpParams);
+    console.debug(this.signUpParams);
     return from(abc);
   }
 
@@ -145,7 +145,7 @@ export class AuthService {
   }
 */
   public isAuthenticated(): Observable<boolean> {
-    console.log('isAuthenticated');
+    console.debug('isAuthenticated');
     return from(Auth.currentAuthenticatedUser()).pipe(
       map(result => {
         //console.log(result);
@@ -199,8 +199,8 @@ export class AuthService {
       //console.log("Userinfo[" + email + "][" + family_name + "][" + given_name + "]");
 
       Auth.updateUserAttributes(current_user,updateUserAttributesParam).then(value =>{
-        console.log('updateUserAttributes-OK');
-        console.log(value);
+        console.debug('updateUserAttributes-OK');
+        console.debug(value);
         if (email != undefined){
           successfullySignup = true;
         }
@@ -223,8 +223,8 @@ export class AuthService {
     Auth.currentUserPoolUser().then(cognitoUser =>{
       Auth.verifyUserAttributeSubmit(cognitoUser, 'email', confirmationCode).then(
         result =>{
-        console.log('verfyAttribute Success');
-        console.log(result);
+        console.debug('verfyAttribute Success');
+        console.debug(result);
         this.messageService.Output(ConstType.TYPE.SUCCESS, '認証正常終了');
       })
       .catch((error) => {

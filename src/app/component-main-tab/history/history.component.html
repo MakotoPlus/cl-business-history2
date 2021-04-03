@@ -1,1 +1,174 @@
-<p>history works!</p>
+<hr>
+<div class="container">
+  <form [formGroup]="fmGroup" (ngSubmit)="onSubmit()">
+    <div>
+      <button type="button" class="btn btn-dark" >Clear</button>
+      <button type="button" class="btn btn-dark" [disabled]="(fmGroup.invalid || isDisable)">Update</button>
+      <button type="button" class="btn btn-dark" [disabled]="(fmGroup.invalid || isDisable )" (click)="InsertClick()">Insert</button>
+      <button type="button" class="btn btn-dark" >Delete</button>
+    </div>
+    <p>
+      <a data-toggle="collapse" href="#collapseExample01" aria-expanded="true" aria-controls="collapseExample">
+        基本情報
+      </a>
+    </p>
+    <div class="collapse show" id="collapseExample01">
+        <div class="input-group mb-2">
+          <div class="input-group-prepend">
+            <span class="input-group-text">期間*</span>
+          </div>
+          <!--
+          <input type="text" class="form-control" placeholder=""  aria-label="期間" aria-describedby="text1a">
+          <input type="text" class="form-control month" value="">
+          -->
+          <input class="form-control bg-white date" placeholder="yyyy-mm-dd"
+            name="dp" [(ngModel)]="sWorkFrom"
+            ngbDatepicker #d="ngbDatepicker" formControlName="work_from" readonly>
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><mat-icon>calendar_today</mat-icon></button>
+          </div>
+          <div class="input-group-text">to</div>
+          <input class="form-control bg-white date" placeholder="yyyy-mm-dd"
+            name="ddp" [(ngModel)]="sWorkTo"
+            ngbDatepicker #dd="ngbDatepicker" formControlName="work_to" readonly>
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary calendar" (click)="dd.toggle()" type="button"><mat-icon>calendar_today</mat-icon></button>
+          </div>
+        </div>
+        <div class="input-group mb-2">
+          <div class="input-group-prepend">
+            <span class="input-group-text">案件名*</span>
+          </div>
+          <input type="text" class="form-control" placeholder="必須"  aria-label="案件名" aria-describedby="text1a" formControlName="jobname">
+        </div>
+
+      <div class="form-row">
+          <div class="form-group col-5 input-group mb-2">
+            <div class="input-group-prepend">
+              <span class="input-group-text">業種*</span>
+            </div>
+            <input type="text" class="form-control" placeholder="必須"  aria-label="業種" aria-describedby="text1a" size=10 maxlength=10 formControlName="industry">
+          </div>
+        <div class="form-group col-7 input-group mb-2">
+          <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSelect01">ポジション</label>
+          </div>
+          <select class="custom-select" id="inputGroupSelect01" formControlName="position">
+            <option value="PM" selected>PM:プロジェクトマネージャ</option>
+            <option value="PL" >PL:プロジェクトリーダ</option>
+            <option value="SL">SL:サブリーダ</option>
+            <option value="M">M:メンバー</option>
+            <option value="AM">AM:アーキテクト</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+          <div class="form-group col-3 input-group mb-2">
+            <div class="input-group-prepend">
+              <span class="input-group-text">規模</span>
+            </div>
+            <input type="number" class="form-control" formControlName="scale" placeholder="人月"  aria-label="規模" aria-describedby="text1a" >
+          </div>
+
+          <div class="form-group col-3 input-group mb-2" >
+            <div class="input-group-prepend">
+              <span class="input-group-text">人数</span>
+            </div>
+            <input type="number" class="form-control" formControlName="persons" placeholder="人数/月"  aria-label="人数" aria-describedby="text1a">
+          </div>
+        </div>
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <span class="input-group-text">作業詳細</span>
+        </div>
+        <textarea class="form-control" rows="4" formControlName="details" aria-label="With textarea"></textarea>
+      </div>
+      </div>
+    <br/>
+    <p>
+      <a data-toggle="collapse" href="#collapseExample02" aria-expanded="false" aria-controls="collapseExample">
+        経験工程
+      </a>
+    </p>
+    <div class="collapse show" id="collapseExample02">
+      <div class="card card-body">
+        <div class="row">
+          <ng-container formArrayName="process_group_list">
+            <ng-container *ngFor="let item of process_check;">
+              <div class="col-2">
+                <div class="custom-control custom-checkbox">
+                    <label>
+                    <input type="checkbox" [value]="item.key"
+                    (change)="onChangeProcessGroupList(item.key, $event.target.checked)"><span>{{ item.value }}</span>
+                  </label>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <br/>
+    <p>
+      <a data-toggle="collapse" href="#collapseExample03" aria-expanded="false" aria-controls="collapseExample">
+        言語/環境
+      </a>
+    </p>
+    <!--
+      <div formArrayName="aliases2">
+        <div *ngFor="let alias of aliases2.controls; let i=index">
+          <div [formGroup] ="alias">
+            <select formControlName="type">
+              種類
+              <option *ngFor="let historyType of HistoryTypeListbox"
+                [ngValue]="historyType.name">{{historyType.name}}</option>
+            </select>
+            details:<input type="text" [alias.details]="i">
+            version:<input type="text" [alias.version]="i">
+            </div>
+        </div>
+      </div>
+    -->
+    <div class="collapse show" id="collapseExample03">
+      <div formArrayName="envGroups">
+        <div *ngFor="let envGroup of envGroups.controls; let i=index">
+          <div [formGroup] ="envGroup">
+            <div class="form-row">
+              <div class="pt-2 mr-2">
+                {{i+1}}.
+              </div>
+              <div class="form-group col-3 input-group mb-2 ">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputGroupSelect001">種類</label>
+                </div>
+                <select class="custom-select" formControlName="type" for="inputGroupSelect001">
+                  <option *ngFor="let historyType of HistoryTypeListbox"
+                    [ngValue]="historyType.name">{{historyType.name}}</option>
+                </select>
+              </div>
+              <div class="form-group col-3 input-group mb-2 ">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">内容</span>
+                </div>
+                <input type="text"  class="form-control" formControlName="details" placeholder=""  aria-label="" aria-describedby="text1a">
+              </div>
+              <div class="form-group col-3 input-group mb-2">
+                <div class="input-group-prepend">
+                  <label class="input-group-text" for="inputVerText002">Version</label>
+                </div>
+                <input type="text"  class="form-control" formControlName="version" placeholder=""  aria-label="" aria-describedby="text1a" >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <button type="button" class="btn btn-dark" >Clear</button>
+      <button type="button" class="btn btn-dark" [disabled]="(isDisable)">Update</button>
+      <button type="button" class="btn btn-dark" [disabled]="fmGroup.invalid">Insert</button>
+      <button type="button" class="btn btn-dark" >Delete</button>
+    </div>
+
+  </form>
+</div>

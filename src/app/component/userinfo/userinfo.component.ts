@@ -34,7 +34,7 @@ export class UserinfoComponent implements OnInit {
       if (login){
         //
         // ログイン情報取得
-        console.log("UserinfoComponent::subscribe.login!!")
+        console.debug("UserinfoComponent::subscribe.login!!")
         this.loginuser = this.auth.loginUser;
         this.loggedIn = login.isLogin;
         this.form_email = this.loginuser.email;
@@ -48,7 +48,7 @@ export class UserinfoComponent implements OnInit {
           ,given_name : [this.form_given_name,[Validators.required]]
         });
       }else{
-        console.log("UserinfoComponent::subscribe.logout....")
+        console.debug("UserinfoComponent::subscribe.logout....")
         this.loggedIn = false;
       }
     });
@@ -64,7 +64,7 @@ export class UserinfoComponent implements OnInit {
     console.log(this.fmGroup.value);
 
     this.modalService.confirm('ユーザ情報変更', '実行してよろしいですか？').then( result => {
-      console.log('custom confirm');
+      console.debug('custom confirm');
       //
       //emailが変更されているか確認し変更されていない場合は、呼出しパラメータに設定しない。
       //(まぁしても影響無いんだけど。。)
@@ -91,6 +91,7 @@ export class UserinfoComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    this.subscriptionLogin.unsubscribe();
   }
 
 }

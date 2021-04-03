@@ -30,18 +30,22 @@ export class RestapiService {
       ,'Content-Type': 'application/json'
     };
   }
+  //------------------------------------------------------------------------------
   //
   // ユーザ情報取得API(GET)
+  //------------------------------------------------------------------------------
   public getUser(sub : string, token : string ): Observable<any> {
     const httpOptions = this.getHeader(token);
     this.Url = environment.apiBaseUrl + '/userinfo/' + sub;
-    console.log('Header=');
-    console.log(httpOptions);
+    console.debug('Header=');
+    console.debug(httpOptions);
     return this.http.get<any>(this.Url, httpOptions).pipe(
       catchError(this.handleError('getUser', [])));
   }
+  //------------------------------------------------------------------------------
   //
   // ユーザ情報更新API(PUT)
+  //------------------------------------------------------------------------------
   public putUser(sub : string, token : string, body : any ): Observable<any> {
     const httpOptions = this.getHeader(token);
     this.Url = environment.apiBaseUrl + '/userinfo/' + sub;
@@ -50,7 +54,17 @@ export class RestapiService {
       catchError(this.handleError('putUser', [])));
   }
 
-
+  //------------------------------------------------------------------------------
+  //
+  // 業務経歴追加API(POST)
+  //------------------------------------------------------------------------------
+  public postHistory(sub : string, token : string, body : any ): Observable<any> {
+    const httpOptions = this.getHeader(token);
+    this.Url = environment.apiBaseUrl + '/history/' + sub;
+    console.log(httpOptions);
+    return this.http.post<any>(this.Url, body, httpOptions).pipe(
+      catchError(this.handleError('postHistory', [])));
+  }
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       let errmsg = `通信でエラーが発生しました。(${operation})`;

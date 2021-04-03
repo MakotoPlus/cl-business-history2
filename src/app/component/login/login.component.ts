@@ -49,8 +49,8 @@ export class LoginComponent implements OnInit {
       password = value.password;
     this.auth.signIn(email, password).subscribe(
       result => {
-        console.log('onSubmitLogin() Success');
-        console.log(result);
+        console.debug('onSubmitLogin() Success');
+        console.debug(result);
         this.router.navigate(['/']);
       },
       error => {

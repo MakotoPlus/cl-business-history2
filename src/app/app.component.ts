@@ -114,14 +114,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   ngAfterViewChecked() {
-    //this.username = localStorage.getItem(
-    //  environment.localstorageBaseKey + 'LastAuthUser'
-    //);
-    console.log('ユーザ情報取得-ngAfterViewChecked');
-    //this.auth.getData().subscribe(result => {
-    //  this.username = result.attributes.family_name + ' ' + result.attributes.given_name;
-    //});
-   // this.cdr.detectChanges();
+    // ここ常に呼出される・・。一旦なにもしないいいのか？
+    //console.log('ユーザ情報取得-ngAfterViewChecked');
  }
 
 

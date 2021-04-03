@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from './../../auth/auth.service';
 import {RestapiService} from '../../service/restapi.service';
 import { Subscription } from 'rxjs';
-import { LoginService } from '../../service/login.service';
-import {IfUserinfo} from '../../interface/userinfo';
 import {MessageService} from './../../service/message.service';
 import { User } from './../../component/user';
 import {ConstType} from './../../component/common/ConstType';
@@ -20,8 +18,8 @@ import { ModalService } from '../../service/modal.service';
 })
 export class ProfileComponent implements OnInit {
   model: NgbDateStruct;
-  date: {year: number, month: number};
-  private token: string;
+  //date: {year: number, month: number};
+  //private token: string;
   fmGroup : FormGroup;
   //subscriptionLogin: Subscription;
 
@@ -37,15 +35,12 @@ export class ProfileComponent implements OnInit {
   constructor(
       private auth: AuthService
       ,private fb: FormBuilder
-      ,private loginService : LoginService
       ,private messageService : MessageService
       ,private modalService: ModalService
       ,private restapi : RestapiService
       ){ }
 
   ngOnInit(): void {
-
-    console.log('profile ngOnInit');
     this.setFormgrp();
     this.getUser();
   }
@@ -161,17 +156,17 @@ export class ProfileComponent implements OnInit {
   }
 
   onSubmit(){
-    console.log(this.fmGroup.value);
+    console.debug(this.fmGroup.value);
     this.modalService.confirm('Profile', '変更を保存してよろしいですか？').then( result => {
       if (!result){ return;}
-      console.log('submit result' + result);
+      console.debug('submit result' + result);
       this.restapi.putUser(this.auth.loginUser.sub,
         this.auth.loginUser.idToken, this.fmGroup.value
       ).subscribe(
         result=>{
-          console.log('submit-result');
-          console.log(result);
-          this.messageService.Output(ConstType.TYPE.SUCCESS, 'Profile 更新しました');
+          console.debug('submit-result');
+          console.debug(result);
+          this.messageService.Output(ConstType.TYPE.SUCCESS, 'Profileを更新しました');
 
         }
         ,error =>{
