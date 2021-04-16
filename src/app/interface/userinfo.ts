@@ -7,7 +7,7 @@ export interface IfUserinfo {
   given_name: string,
   name: string, /* email */
   user_name: string,
-  id_company: number,
+  companycd: number,
   sub : string,
   company_name: string;
   idToken : string;
@@ -16,3 +16,4 @@ export interface IfUserinfo {
   set( login:boolean, userinfo?:any):void;
 
 }
+

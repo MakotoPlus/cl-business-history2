@@ -58,7 +58,7 @@ export class AuthService {
             ,'email': email
             ,'family_name': family_name
             ,'given_name': given_name
-            ,'custom:admin': '0'
+            ,'custom:companycd': '0'
           }
     };
     console.debug('no log--------01?');
@@ -239,44 +239,19 @@ export class AuthService {
     });
   }
 
-
-/*    }
-    Auth.verifyUserAttribute(
-      this.loginUser, confirmationCode,
-      {"email_verfied" : "true"}).then( result =>{
-        console.log('verfyAttribute Success');
-      }).catch(error =>{
-        console.log('verfyAttribute Error');
-        console.log(error);
-      });
+  /** アカウント削除 */
+  public deleteUser(){
   }
-/*
-      }
-      this.currentUser.verifyAttribute("email", confirmationCode, {
-        onSuccess: (result) => {
-          console.log('email verification success')
-          var user = store.getters.user
-          user["email_verified"] = "true"
-          store.commit('setUser', user)
 
-          resolve(result)
-        },
-        onFailure: (err) => {
-          console.log('email verification failed')
-          reject(err)
-        }
-      })
-    })
-  }
-*/
   /** ログアウト */
   public signOut() {
     from(Auth.signOut()).subscribe(
       result => {
-        //this.loggedIn.next(false);
-        this.router.navigate(['/login']);
+        console.debug('signOut');
+        console.debug(result);
         this.loginUser.clear();
         this.loggedIn.next(this.loginUser);
+        this.router.navigate(['/login']);
       },
       error => {
         console.log('signOut()Error!!');

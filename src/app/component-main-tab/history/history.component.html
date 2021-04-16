@@ -1,11 +1,23 @@
-<hr>
+<!--
+          <mat-form-field appearance="fill">
+            <mat-label>Month and Year</mat-label>
+            <input matInput [matDatepicker]="dp" [formControl]="date">
+            <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+            <mat-datepicker #dp
+                            startView="multi-year"
+                            (yearSelected)="chosenYearHandler($event)"
+                            (monthSelected)="chosenMonthHandler($event, dp)"
+                            panelClass="example-month-picker">
+            </mat-datepicker>
+          </mat-form-field>
+-->
+          <hr>
 <div class="container">
   <form [formGroup]="fmGroup" (ngSubmit)="onSubmit()">
     <div>
-      <button type="button" class="btn btn-dark" >Clear</button>
-      <button type="button" class="btn btn-dark" [disabled]="(fmGroup.invalid || isDisable)">Update</button>
       <button type="button" class="btn btn-dark" [disabled]="(fmGroup.invalid || isDisable )" (click)="InsertClick()">Insert</button>
-      <button type="button" class="btn btn-dark" >Delete</button>
+      <button type="button" class="btn btn-dark" [disabled]="(fmGroup.invalid || isDisable || (!isUpdate))" (click)="UpdateClick()">Update</button>
+      <button type="button" class="btn btn-dark" [disabled]="(!isDelete)" (click)="DeleteClick()">Delete</button>
     </div>
     <p>
       <a data-toggle="collapse" href="#collapseExample01" aria-expanded="true" aria-controls="collapseExample">
@@ -14,25 +26,55 @@
     </p>
     <div class="collapse show" id="collapseExample01">
         <div class="input-group mb-2">
+          <!--
           <div class="input-group-prepend">
             <span class="input-group-text">期間*</span>
           </div>
-          <!--
-          <input type="text" class="form-control" placeholder=""  aria-label="期間" aria-describedby="text1a">
-          <input type="text" class="form-control month" value="">
-          -->
           <input class="form-control bg-white date" placeholder="yyyy-mm-dd"
             name="dp" [(ngModel)]="sWorkFrom"
             ngbDatepicker #d="ngbDatepicker" formControlName="work_from" readonly>
           <div class="input-group-append">
             <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><mat-icon>calendar_today</mat-icon></button>
           </div>
+          -->
+          <mat-form-field appearance="fill">
+            <mat-label>期間 FROM *</mat-label>
+            <input matInput [matDatepicker]="dp" [formControl]="work_from">
+            <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+            <mat-datepicker #dp
+                            startView="multi-year"
+                            (yearSelected)="chosenFromYearHandler($event)"
+                            (monthSelected)="chosenFromMonthHandler($event, dp)"
+                            panelClass="example-month-picker">
+            </mat-datepicker>
+          </mat-form-field>
+          <!--
           <div class="input-group-text">to</div>
+          -->
+          <mat-form-field appearance="fill">
+            <mat-label>TO * </mat-label>
+            <input matInput [matDatepicker]="dp2" [formControl]="work_to">
+            <mat-datepicker-toggle matSuffix [for]="dp2"></mat-datepicker-toggle>
+            <mat-datepicker #dp2
+                            startView="multi-year"
+                            (yearSelected)="chosenToYearHandler($event)"
+                            (monthSelected)="chosenToMonthHandler($event, dp2)"
+                            panelClass="example-month-picker">
+            </mat-datepicker>
+          </mat-form-field>
+          <!--
           <input class="form-control bg-white date" placeholder="yyyy-mm-dd"
             name="ddp" [(ngModel)]="sWorkTo"
             ngbDatepicker #dd="ngbDatepicker" formControlName="work_to" readonly>
           <div class="input-group-append">
             <button class="btn btn-outline-secondary calendar" (click)="dd.toggle()" type="button"><mat-icon>calendar_today</mat-icon></button>
+          </div>
+          -->
+        </div>
+        <div *ngIf="(work_from.invalid && (work_from.dirty || work_from.touched)) || (work_to.invalid && (work_to.dirty || work_to.touched))"
+          class="alert alert-danger">
+          <div *ngIf="(work_from.errors.required || work_to.errors.required)">
+            この項目は必須です。入力フォーマットは、西暦/月(yyyy/mm)です。
           </div>
         </div>
         <div class="input-group mb-2">
@@ -41,14 +83,19 @@
           </div>
           <input type="text" class="form-control" placeholder="必須"  aria-label="案件名" aria-describedby="text1a" formControlName="jobname">
         </div>
-
-      <div class="form-row">
+        <div *ngIf="jobname.invalid && (jobname.dirty || jobname.touched)"
+            class="alert alert-danger">
+          <div *ngIf="jobname.errors.required">
+            この項目は必須です
+          </div>
+        </div>
+        <div class="form-row">
           <div class="form-group col-5 input-group mb-2">
             <div class="input-group-prepend">
-              <span class="input-group-text">業種*</span>
-            </div>
-            <input type="text" class="form-control" placeholder="必須"  aria-label="業種" aria-describedby="text1a" size=10 maxlength=10 formControlName="industry">
+            <span class="input-group-text">業種*</span>
           </div>
+          <input type="text" class="form-control" placeholder="必須"  aria-label="業種" aria-describedby="text1a" size=10 maxlength=10 formControlName="industry">
+        </div>
         <div class="form-group col-7 input-group mb-2">
           <div class="input-group-prepend">
             <label class="input-group-text" for="inputGroupSelect01">ポジション</label>
@@ -60,6 +107,12 @@
             <option value="M">M:メンバー</option>
             <option value="AM">AM:アーキテクト</option>
           </select>
+        </div>
+      </div>
+      <div *ngIf="industry.invalid && (industry.dirty || industry.touched)"
+          class="alert alert-danger">
+        <div *ngIf="industry.errors.required">
+          この項目は必須です
         </div>
       </div>
       <div class="form-row">
@@ -93,18 +146,14 @@
     <div class="collapse show" id="collapseExample02">
       <div class="card card-body">
         <div class="row">
-          <ng-container formArrayName="process_group_list">
-            <ng-container *ngFor="let item of process_check;">
-              <div class="col-2">
-                <div class="custom-control custom-checkbox">
-                    <label>
-                    <input type="checkbox" [value]="item.key"
-                    (change)="onChangeProcessGroupList(item.key, $event.target.checked)"><span>{{ item.value }}</span>
-                  </label>
-                </div>
-              </div>
-            </ng-container>
-          </ng-container>
+          <div class="col-2" *ngFor="let data of ProcessCheckboxData; let i=index">
+            <div class="custom-control custom-checkbox">
+              <label>
+                <input type="checkbox" [value]="data.key" [checked]="data.selected" (change)="onChangeProcessCheckbox($event)" />
+                {{data.value}}
+              </label>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -114,21 +163,6 @@
         言語/環境
       </a>
     </p>
-    <!--
-      <div formArrayName="aliases2">
-        <div *ngFor="let alias of aliases2.controls; let i=index">
-          <div [formGroup] ="alias">
-            <select formControlName="type">
-              種類
-              <option *ngFor="let historyType of HistoryTypeListbox"
-                [ngValue]="historyType.name">{{historyType.name}}</option>
-            </select>
-            details:<input type="text" [alias.details]="i">
-            version:<input type="text" [alias.version]="i">
-            </div>
-        </div>
-      </div>
-    -->
     <div class="collapse show" id="collapseExample03">
       <div formArrayName="envGroups">
         <div *ngFor="let envGroup of envGroups.controls; let i=index">
@@ -164,10 +198,9 @@
       </div>
     </div>
     <div>
-      <button type="button" class="btn btn-dark" >Clear</button>
-      <button type="button" class="btn btn-dark" [disabled]="(isDisable)">Update</button>
-      <button type="button" class="btn btn-dark" [disabled]="fmGroup.invalid">Insert</button>
-      <button type="button" class="btn btn-dark" >Delete</button>
+      <button type="button" class="btn btn-dark" [disabled]="(fmGroup.invalid || isDisable )" (click)="InsertClick()">Insert</button>
+      <button type="button" class="btn btn-dark" [disabled]="(fmGroup.invalid || isDisable || (!isUpdate))" (click)="UpdateClick()">Update</button>
+      <button type="button" class="btn btn-dark" [disabled]="(!isDelete)" (click)="DeleteClick()">Delete</button>
     </div>
 
   </form>

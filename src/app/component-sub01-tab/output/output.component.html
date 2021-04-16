@@ -1,0 +1,168 @@
+<form [formGroup]="fmGroup" (ngSubmit)="onSubmit()">
+  <!--
+<table class="table table-hover ">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#.ID-氏名
+        <div class="float-right">
+          <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#ReportFilterModal" data-whatever="@fat">Report Filter </button>
+        </div>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td scope="row">
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="customCheckPrint01">
+        <label class="custom-control-label" for="customCheckPrint01">1. 051-福田 誠 (ふくだ まこと)</label>
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td scope="row">
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="customCheckPrint02">
+        <label class="custom-control-label" for="customCheckPrint02">2. 077-石崎 悦司 (いしざき えつし)</label>
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td scope="row">
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="customCheckPrint03">
+        <label class="custom-control-label" for="customCheckPrint03">3. 078-XXXX</label>
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td scope="row">
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="customCheckPrint04">
+        <label class="custom-control-label" for="customCheckPrint04">3. 078-XXXX</label>
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td scope="row">
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="customCheckPrint05">
+        <label class="custom-control-label" for="customCheckPrint05">3. 075-XXXX</label>
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td scope="row">
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="customCheckPrint06">
+        <label class="custom-control-label" for="customCheckPrint06">3. 0786-XXXX</label>
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td scope="row">
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="customCheckPrint07">
+        <label class="custom-control-label" for="customCheckPrint07">3. 078-7XXXX</label>
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td scope="row">
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="customCheckPrint08">
+        <label class="custom-control-label" for="customCheckPrint08">8. 078-XX88XX</label>
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td scope="row">
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="customCheckPrint09">
+        <label class="custom-control-label" for="customCheckPrint09">9. 078-XX9XX</label>
+      </div>
+      </td>
+    </tr>
+    <tr>
+      <td scope="row">
+      <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="customCheckPrint10">
+        <label class="custom-control-label" for="customCheckPrint10">10. 178-XXXX</label>
+      </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div>
+  <span>Page 1 , 2, 3 </span>
+</div>
+
+<div class="card border-dark" >
+  <h5 class="card-header">Business History PDF Properties</h5>
+    <div class="card-body">
+    <div class="row">
+      <div class="col-6">
+          <div class="input-group-prepend ">
+              <span class="input-group-text">利用日</span>
+            <input type="text" class="form-control date" data-provide="datepicker">
+          </div>
+        </div>
+      </div>
+    <div class="row">
+      <div class="col-4 custom-control custom-checkbox  mt-2 ml-3">
+          <input type="checkbox" class="custom-control-input" id="customCheck201">
+          <label class="custom-control-label" for="customCheck201">Inital Name</label>
+      </div>
+      <div class="col-4 custom-control custom-checkbox  mt-2 ml-2" checked>
+          <input type="checkbox" class="custom-control-input" id="customCheck202" checked>
+          <label class="custom-control-label" for="customCheck202">Company</label>
+      </div>
+    </div>
+    <div class="row mt-3 ml-1">
+      <div>
+        <button type="button" class="btn btn-dark">Print</button>
+      </div>
+    </div>
+  </div>
+</div>
+-->
+  <div class="card border-dark" >
+    <div class="card-header">
+      Parameter
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="input-group mb-2 ">
+          <div class="input-group-prepend ">
+              <span class="input-group-text">利用日*</span>
+          </div>
+          <input class="form-control bg-white date" placeholder="yyyy-mm-dd"
+            name="dp" [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker" formControlName="use_day" readonly>
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button"><mat-icon>calendar_today</mat-icon></button>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4 custom-control custom-checkbox  mt-2 ml-3">
+            <input type="checkbox" [value]="initialCheckbox.Key" [checked]="initialCheckbox.selected"
+              (change)="oninitialCheckboxChange($event)"
+              class="custom-control-input" id="customCheck201">
+            <label class="custom-control-label" for="customCheck201">{{initialCheckbox.value}}</label>
+        </div>
+        <div class="col-4 custom-control custom-checkbox  mt-2 ml-2" >
+            <input type="checkbox" [value]="companyCheckbox.Key" [checked]="companyCheckbox.selected"
+              (change)="oncompanyCheckboxChange($event)"
+              class="custom-control-input" id="customCheck202">
+            <label class="custom-control-label" for="customCheck202">{{companyCheckbox.value}}</label>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3 ml-1">
+      <div>
+        <button type="submit" class="btn btn-dark"> Print </button>
+      </div>
+    </div>
+    <br/>
+  </div>
+</form>

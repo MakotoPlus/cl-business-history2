@@ -9,7 +9,8 @@ import {Alert} from './../../interface/Alert';
 import { FormGroup, Validators, FormControl,FormBuilder } from '@angular/forms';
 import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from '../../service/modal.service';
-
+import {ProfileService} from '../../service/data/profile.service';
+import {ProfileData} from '../../component/common/ProfileData';
 
 @Component({
   selector: 'app-profile',
@@ -18,19 +19,10 @@ import { ModalService } from '../../service/modal.service';
 })
 export class ProfileComponent implements OnInit {
   model: NgbDateStruct;
-  //date: {year: number, month: number};
-  //private token: string;
   fmGroup : FormGroup;
-  //subscriptionLogin: Subscription;
-
-  /**
-   * subscribe を保持するための Subscription
-   *
-   * @private
-   * @type {Subscription}
-   * @memberof Sample1Component
-   */
-   private subscription!: Subscription;
+  private profileSubscription: Subscription;
+  subscription : Subscription;
+  //user : User;
 
   constructor(
       private auth: AuthService
@@ -38,29 +30,36 @@ export class ProfileComponent implements OnInit {
       ,private messageService : MessageService
       ,private modalService: ModalService
       ,private restapi : RestapiService
+      ,private profileService : ProfileService
       ){ }
 
   ngOnInit(): void {
+    //this.getUser();
     this.setFormgrp();
-    this.getUser();
+    this.getProfile();
+    this.profileService.getProfileData();
   }
 
   //ユーザ情報取得
+  /*
   getUser():void {
     this.subscription = this.auth.loggedIn.subscribe((login : User)=>{
       if (login.isLogin){
-        console.log("ProfileComponent::subscribe.login!!");
-        console.log(login);
-        let ret = this.restapi.getUser(this.auth.loginUser.sub,
-          this.auth.loginUser.idToken).subscribe(
-          result => {
-            console.log('profile getUser');
-            console.log(result);
-            this.setUser(result);
-          }
-        );
+        console.debug("ProfileComponent::subscribe.login!!");
+        console.debug(login);
       }
+      this.user = login;
     });
+  }
+  */
+  // プロフィール情報取得
+  getProfile(){
+    this.profileSubscription = this.profileService
+      .profileObservable.subscribe((profileData: ProfileData)=>{
+      console.debug('getProfile.......data');
+      console.debug(profileData);
+      this.setUser(profileData);
+    })
   }
 
   setFormgrp():void{
@@ -68,8 +67,6 @@ export class ProfileComponent implements OnInit {
     // フォーム作成
     this.fmGroup = this.fb.group({
       initial : ['',[]]
-      //,family_name : ['',[Validators.required]]
-      //,given_name : ['',[Validators.required]]
       ,family_name_kana : ['',[]]
       ,given_name_kana : ['',[]]
       ,birthday : ['',[Validators.required]]
@@ -80,12 +77,10 @@ export class ProfileComponent implements OnInit {
       ,date_joined : ['',[]]
       ,pr : ['',[]]
       ,qualifications : ['',[]]
-
     });
   }
-  // html側でアクセスするメソッド
-  //get family_name() {return this.fmGroup.get('family_name');}
-  //get given_name() {return this.fmGroup.get('given_name');}
+
+  // ゲッター
   get family_name_kana() {return this.fmGroup.get('family_name_kana');}
   get given_name_kana() {return this.fmGroup.get('given_name_kana');}
   get initial() {return this.fmGroup.get('initial');}
@@ -160,27 +155,26 @@ export class ProfileComponent implements OnInit {
     this.modalService.confirm('Profile', '変更を保存してよろしいですか？').then( result => {
       if (!result){ return;}
       console.debug('submit result' + result);
-      this.restapi.putUser(this.auth.loginUser.sub,
-        this.auth.loginUser.idToken, this.fmGroup.value
-      ).subscribe(
+      this.restapi.putUser(this.fmGroup.value).subscribe(
         result=>{
           console.debug('submit-result');
           console.debug(result);
           this.messageService.Output(ConstType.TYPE.SUCCESS, 'Profileを更新しました');
-
         }
         ,error =>{
-          this.messageService.Output(ConstType.TYPE.DANGER, `Profile 更新失敗:${error.message}`);
+          this.messageService.Output(ConstType.TYPE.DANGER, 'Profile 更新失敗');
           console.log('ProfileComponent:onSubmitConfirmation:error');
-          console.log(error);
+          console.error(`Profile 更新失敗:${error.message}`);
         }
       )
     });
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
-    //this.subscriptionLogin.unsubscribe();
+    console.debug('this.profileSubscription.unsubscribe()');
+    this.profileSubscription.unsubscribe();
+    //console.debug('this.subscription.unsubscribe()');
+    //this.subscription.unsubscribe();
   }
 
 }

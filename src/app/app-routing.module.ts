@@ -8,6 +8,7 @@ import { UserinfoComponent } from './component/userinfo/userinfo.component';
 import { AuthGuard } from './auth/auth.guard';
 import { ForgotPasswordComponent } from './component/forgot-password/forgot-password.component';
 import { UserinfoDeleteComponent } from './component/userinfo-delete/userinfo-delete.component';
+import {DemoMaterialModule} from './material-module';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },

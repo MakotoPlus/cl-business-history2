@@ -9,6 +9,7 @@ import { IfUserinfo } from './interface/userinfo';
 import { User } from './component/user';
 import {MessageService} from './service/message.service';
 import {Alert} from './interface/Alert';
+import {ConstType} from './component/common/ConstType';
 
 
 @Component({
@@ -31,6 +32,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   //session : CognitoUserSession;
   title = 'cl-business-history2';
   loggedIn : boolean = false;
+  logoutMessage : boolean = false;
   loginuser : User;
   //message : string = '';
   messages : Alert[] = [];
@@ -38,7 +40,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   constructor(public auth: AuthService
     , private cdr: ChangeDetectorRef
     ,private loginService : LoginService
-    ,private messageServce : MessageService
+    ,private messageService : MessageService
     ) {
     //this.username = localStorage.getItem(
     //  environment.localstorageBaseKey + 'LastAuthUser'
@@ -60,10 +62,12 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
         //this.loginuser = result;
         console.log( this.auth.loginUser)
         this.loggedIn = result;
+        this.logoutMessage = true;
       }else{
         console.log("AppComponent::logout....")
         this.auth.loginUser.clear();
         this.loggedIn = false;
+        this.logoutMessage = false;
       }
 
     });
@@ -82,18 +86,25 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     */
     this.subscriptionLogin = this.auth.loggedIn.subscribe((login : User)=>{
-      if (login){
+      if (login.isLogin){
         console.log("AppComponent::subscribe.login!!")
         this.auth.loginUser = login;
         console.log( this.auth.loginUser)
         this.loggedIn = login.isLogin;
+        this.logoutMessage = true;
       }else{
         console.log("AppComponent::subscribe.logout....")
         this.auth.loginUser.clear();
         this.loggedIn = false;
+        if ( this.logoutMessage ){
+          this.messageService.Output(ConstType.TYPE.SUCCESS, 'ログアウトしました');
+          this.logoutMessage = false;
+        }
       }
     });
-    this.messageSubscription = this.messageServce.messageState.subscribe((message:Alert)=>{
+
+
+    this.messageSubscription = this.messageService.messageState.subscribe((message:Alert)=>{
       this.messages.push(message);
       console.log(`Message output:${message}`);
     });

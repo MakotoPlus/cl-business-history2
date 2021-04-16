@@ -1,6 +1,7 @@
 import { IfUserinfo } from './../interface/userinfo';
 import {AppSettings} from './../appsettings';
 import { CognitoUserSession } from 'amazon-cognito-identity-js';
+import { CdkAccordion } from '@angular/cdk/accordion';
 
 export class User implements IfUserinfo {
   public isLogin = false;
@@ -11,7 +12,7 @@ export class User implements IfUserinfo {
   public given_name = '';
   public name = '';
   public sub = '';
-  public id_company = 0;
+  public companycd = 0;
   public company_name = '';
   public idToken = '';
   public authority = AppSettings.AUTHORITY_USER;
@@ -33,7 +34,7 @@ export class User implements IfUserinfo {
     this.given_name = '';
     this.name = '';
     this.sub = '';
-    this.id_company = 0;
+    this.companycd = 0;
     this.company_name = '';
     this.idToken = '';
     this.authority = AppSettings.AUTHORITY_USER;
@@ -52,6 +53,7 @@ export class User implements IfUserinfo {
     this.email = userinfo.attributes.email;
     this.sub = userinfo.attributes.sub;
     this.user_name = this.family_name + ' ' + this.given_name;
+    this.companycd = userinfo.attributes['custom:companycd'];
     //token id 設定
     if (userinfo.signInUserSession){
       this.idToken = userinfo.signInUserSession.getIdToken().getJwtToken();

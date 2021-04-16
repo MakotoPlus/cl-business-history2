@@ -1,7 +1,7 @@
 <ul ngbNav #nav="ngbNav"  [(activeId)]="activeTab"  class="nav-pills">
   <li ngbNavItem="tab-history">
     <a ngbNavLink>業務経歴書一覧</a>
-    <ng-template ngbNavContent ><app-historylist></app-historylist></ng-template>
+    <ng-template ngbNavContent ><app-historylist (event)="onReceiveEventFromChild($event)"></app-historylist></ng-template>
   </li>
   <li ngbNavItem="tab-historylist">
     <a ngbNavLink>新規/更新</a>
@@ -13,3 +13,4 @@
   </li>
 </ul>
 <div [ngbNavOutlet]="nav"></div>
+

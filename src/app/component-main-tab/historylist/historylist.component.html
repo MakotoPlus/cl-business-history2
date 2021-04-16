@@ -1,1 +1,64 @@
-<p>historylist works!</p>
+<div class="custom_scroll">
+  <table class="table table-hover custom_table" >
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">期間</th>
+        <th scope="col">案件名</th>
+        <th scope="col">業種</th>
+        <th scope="col">規模</th>
+        <th scope="col">ポジション</th>
+        <th scope="col">人数</th>
+        <th scope="col">経験工程</th>
+        <th scope="col">言語/環境</th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let history of historyData; index as i" >
+      <th>{{i+1}}</th>
+      <td>{{history.work_from}} - {{history.work_to}}</td>
+      <td>
+        <button type="button" class="btn btn-link" (click)="ClickLink(i)">{{history.jobname}}</button>
+      </td>
+       <td>{{history.industry}}</td>
+       <td>{{history.scale}}</td>
+       <td>{{history.position}}</td>
+       <td>{{history.persons}}</td>
+       <td>
+        <div *ngIf="historyData[i].process_group_list.RD" >
+          RD
+        </div>
+        <div *ngIf="historyData[i].process_group_list.BD" >
+          BD
+        </div>
+        <div *ngIf="historyData[i].process_group_list.DD" >
+          DD
+        </div>
+        <div *ngIf="historyData[i].process_group_list.PG" >
+          PG
+        </div>
+        <div *ngIf="historyData[i].process_group_list.UT" >
+          UT
+        </div>
+        <div *ngIf="historyData[i].process_group_list.IT" >
+          IT
+        </div>
+        <div *ngIf="historyData[i].process_group_list.ST" >
+          ST
+        </div>
+        <div *ngIf="historyData[i].process_group_list.OT" >
+          OT
+        </div>
+        <div *ngIf="historyData[i].process_group_list.OP" >
+          OP
+        </div>
+       </td>
+       <td>
+          <div *ngFor="let envGroup of historyData[i].envGroups; index as x" >
+            {{envGroup.type}} {{envGroup.details}} {{envGroup.version}}
+          </div>
+        </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
