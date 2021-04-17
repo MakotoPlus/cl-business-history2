@@ -123,7 +123,8 @@ export class HistoryComponent implements OnInit {
 
   //言語環境 ListBox
   HistoryTypeListbox : Array<{status:string, name :string}>=[
-    {status: HistoryType.LANGUAGE.value, name: HistoryType.LANGUAGE.name}
+    {status: '', name: ''}
+    ,{status: HistoryType.LANGUAGE.value, name: HistoryType.LANGUAGE.name}
     ,{status: HistoryType.FRAMEWORK.value, name: HistoryType.FRAMEWORK.name}
     ,{status: HistoryType.DB.value, name: HistoryType.DB.name}
     ,{status: HistoryType.OS.value, name: HistoryType.OS.name}
@@ -146,13 +147,13 @@ export class HistoryComponent implements OnInit {
   ProcessCheckboxData:Array<any>=[
     {key : ProcessType.RD.key, value : ProcessType.RD.name, selected : false}
     ,{key : ProcessType.BD.key, value : ProcessType.BD.name, selected : false}
-    ,{key : ProcessType.DD.key, value : ProcessType.DD.name, selected : false}
+    ,{key : ProcessType.PS.key, value : ProcessType.PS.name, selected : false}
     ,{key : ProcessType.PG.key, value : ProcessType.PG.name, selected : false}
     ,{key : ProcessType.UT.key, value : ProcessType.UT.name, selected : false}
     ,{key : ProcessType.IT.key, value : ProcessType.IT.name, selected : false}
     ,{key : ProcessType.ST.key, value : ProcessType.ST.name, selected : false}
     ,{key : ProcessType.OT.key, value : ProcessType.OT.name, selected : false}
-    ,{key : ProcessType.OP.key, value : ProcessType.OP.name, selected : false}
+    ,{key : ProcessType.OM.key, value : ProcessType.OM.name, selected : false}
   ]
 
   constructor(

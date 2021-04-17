@@ -81,7 +81,7 @@
           <div class="input-group-prepend">
             <span class="input-group-text">案件名*</span>
           </div>
-          <input type="text" class="form-control" placeholder="必須"  aria-label="案件名" aria-describedby="text1a" formControlName="jobname">
+          <textarea rows="2"  class="form-control" placeholder="必須"  aria-label="案件名" aria-describedby="text1a" formControlName="jobname"></textarea>
         </div>
         <div *ngIf="jobname.invalid && (jobname.dirty || jobname.touched)"
             class="alert alert-danger">
