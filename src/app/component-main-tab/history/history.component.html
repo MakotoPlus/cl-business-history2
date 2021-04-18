@@ -71,11 +71,14 @@
           </div>
           -->
         </div>
-        <div *ngIf="(work_from.invalid && (work_from.dirty || work_from.touched)) || (work_to.invalid && (work_to.dirty || work_to.touched))"
+          <div *ngIf="(work_from.errors?.from_to_error || ((work_from.invalid ) && (work_from.dirty || work_from.touched)) || (work_to.invalid && (work_to.dirty || work_to.touched)))"
           class="alert alert-danger">
-          <div *ngIf="(work_from.errors.required || work_to.errors.required)">
+          <div *ngIf="(work_from.errors?.required || work_to.errors?.required)">
             この項目は必須です。入力フォーマットは、西暦/月(yyyy/mm)です。
           </div>
+          <div *ngIf="(work_from.errors?.from_to_error)">
+            期間From,Toの値が不正です。
+        </div>
         </div>
         <div class="input-group mb-2">
           <div class="input-group-prepend">
@@ -140,12 +143,12 @@
     <br/>
     <p>
       <a data-toggle="collapse" href="#collapseExample02" aria-expanded="false" aria-controls="collapseExample">
-        経験工程
+        経験工程* (最低1つは必須)
       </a>
     </p>
     <div class="collapse show" id="collapseExample02">
       <div class="card card-body">
-        <div class="row">
+          <div class="row">
           <div class="col-2" *ngFor="let data of ProcessCheckboxData; let i=index">
             <div class="custom-control custom-checkbox">
               <label>
@@ -202,6 +205,5 @@
       <button type="button" class="btn btn-dark" [disabled]="(fmGroup.invalid || isDisable || (!isUpdate))" (click)="UpdateClick()">Update</button>
       <button type="button" class="btn btn-dark" [disabled]="(!isDelete)" (click)="DeleteClick()">Delete</button>
     </div>
-
   </form>
 </div>

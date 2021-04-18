@@ -8,7 +8,7 @@ import {MessageService} from './../../service/message.service';
 import { User } from './../../component/user';
 import {ConstType, HistoryType, ProcessType} from './../../component/common/ConstType';
 import {Alert} from './../../interface/Alert';
-import { FormGroup, Validators, FormArray ,FormBuilder,ValidatorFn, FormControl} from '@angular/forms';
+import { AbstractControl, FormGroup, Validators, FormArray ,FormBuilder,ValidatorFn, FormControl} from '@angular/forms';
 import {NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from '../../service/modal.service';
 import {HistorylistService} from '../../service/data/historylist.service';
@@ -251,13 +251,55 @@ export class HistoryComponent implements OnInit {
       return valid?null:{error:'Not all name are a'}
     }
   }
-
   // FORM 全体入力チェックメソッド
-  // チェックボックスのON/OFF変更は、コントロール毎の入力チェックが発生しないらしい。
-  validateIfChecked() : ValidatorFn  {
+  // チェックボックスのON/OFF変更は、
+  // コントロール毎の入力チェックが発生しないらしい。
+  // -> うそ　onChangeProcessCheckbox で出来ている！
+  //    ここでは、期限日FROM TOの関係性のチェックのみ実施
+  // ここからクラスメンバへのアクセスは何故か出来ないので
+  // static化させてパラメータのacからアクセスする
+  validateIfChecked(ac : AbstractControl) : void{
     console.debug('validateIfChecked');
+    let wfrom_date = ac.get('work_from');
+    let wto_date = ac.get('work_to');
+    if ( (!wfrom_date) || (!wto_date)){
+      return;
+    }
+    //console.debug(wfrom_date);
+    //console.debug(wto_date);
+    //console.debug(wfrom_date.value);
+    //console.debug(wto_date.value);
+    let from_yyyymm = HistoryComponent.ChangeYyyymm(wfrom_date);
+    let to_yyyymm = HistoryComponent.ChangeYyyymm(wto_date);
+    if ((from_yyyymm.length > 0) && (to_yyyymm.length > 0)){
+      if (from_yyyymm > to_yyyymm){
+        console.debug('期間From Toの値が不正です');
+        ac.get('work_from').
+          setErrors({ from_to_error:'期間From,Toの値が不正です'});
+          ac.get('work_to').
+          setErrors({ from_to_error:'期間From,Toの値が不正です'});
+      }else{
+        console.debug('期間From Toの値がOK!!');
+        ac.get('work_from').
+          setErrors(null);
+          ac.get('work_to').
+          setErrors(null);
+      }
+    }
+    /*
     return (form:FormGroup):{[key: string]: any} | null=>{
       let valid:boolean=false;
+
+      // 期限日FROM/TOの日付が逆転していないかチェック
+      let from_date = this.work_from.value
+      let to_date = this.work_to.value
+      if ((from_date.length > 0) && (to_date.length > 0)){
+        if (from_date > to_date){
+          return {error:'From/to date error'}
+        }
+      }
+
+
       // checkbox control
       const process_group_list = form.get('process_group_list') as FormArray;
       process_group_list.controls.forEach((x:FormGroup)=>{
@@ -270,6 +312,7 @@ export class HistoryComponent implements OnInit {
       console.debug( "valud=:" + valid);
       return valid?null:{error:'Not all name are a'}
     }
+  */
   }
 
   get envGroups(){
@@ -373,10 +416,10 @@ export class HistoryComponent implements OnInit {
       let sendBody = _.cloneDeep(this.fmGroup.value);
 
       // work_from, work_to の値を変換する
-      let from_yyyymm = this.ChangeYyyymm(this.work_from.value.year(), this.work_from.value.month());
+      let from_yyyymm = HistoryComponent.ChangeYyyymm(this.work_from);
       let to_yyyymm = '';
       if (this.work_to.value){
-        to_yyyymm = this.ChangeYyyymm(this.work_to.value.year(), this.work_to.value.month());
+        to_yyyymm = HistoryComponent.ChangeYyyymm(this.work_to);
       }
       //
       // work_from , work_to は作成した文字列にチェンジする
@@ -416,9 +459,9 @@ export class HistoryComponent implements OnInit {
   // 数値年、月の変換関数
   // yyyy, mm(0 - 11 )  -> yyyy/mm
   //
-  ChangeYyyymm( year: number, month : number ) : string{
-    let yyyy = year.toString().padStart(4, '0');
-    let mm = (month+ 1).toString().padStart(2, '0');
+  static ChangeYyyymm( control: AbstractControl ) : string {
+    let yyyy = control.value.year().toString().padStart(4, '0');
+    let mm = (control.value.month()+ 1).toString().padStart(2, '0');
     let yyyymm = yyyy + '/' + mm;
     return yyyymm;
   }
@@ -456,10 +499,10 @@ export class HistoryComponent implements OnInit {
 
 
         // work_from, work_to の値を変換する
-        let from_yyyymm = this.ChangeYyyymm(this.work_from.value.year(), this.work_from.value.month());
+        let from_yyyymm = HistoryComponent.ChangeYyyymm(this.work_from);
         let to_yyyymm = '';
         if (this.work_to.value){
-          to_yyyymm = this.ChangeYyyymm(this.work_to.value.year(), this.work_to.value.month());
+          to_yyyymm = HistoryComponent.ChangeYyyymm(this.work_to);
         }
         //
         // work_from , work_to は作成した文字列にチェンジする
@@ -553,13 +596,18 @@ export class HistoryComponent implements OnInit {
       // チェックボックスON,OFF保存コントロールにも情報設定。
       // ChangeBoxItem.selectedでうまくチェックするように変更すれば良さそうだけど。
       //
+      // 開発中だからだけどゴミデータがあるので画面表示以外のデータは保存しないようにする
       Object.keys(historyData.process_group_list).forEach((key)=>{
         console.debug(`checkBoxItem`);
         console.debug(historyData.process_group_list[key]);
-        if ( historyData.process_group_list[key]){
-          const checkArray: FormArray = this.fmGroup.get('process_group_list') as FormArray;
-          checkArray.push(new FormControl(key));
-        }
+        this.ProcessCheckboxData.forEach(checkBoxData=>{
+          if ( checkBoxData.key == historyData.process_group_list[key]){
+            if ( historyData.process_group_list[key]){
+              const checkArray: FormArray = this.fmGroup.get('process_group_list') as FormArray;
+              checkArray.push(new FormControl(key));
+            }
+          }
+        });
       });
 
       //
