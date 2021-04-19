@@ -279,7 +279,7 @@ export class HistoryComponent implements OnInit {
           ac.get('work_to').
           setErrors({ from_to_error:'期間From,Toの値が不正です'});
       }else{
-        console.debug('期間From Toの値がOK!!');
+        //console.debug('期間From Toの値がOK!!');
         ac.get('work_from').
           setErrors(null);
           ac.get('work_to').
@@ -639,7 +639,6 @@ export class HistoryComponent implements OnInit {
       this.isDisable = false;
       this.fmGroup.validator;
       console.debug(this.LangInputData);
-
       });
   }
 
@@ -649,6 +648,6 @@ export class HistoryComponent implements OnInit {
       this.subscription.unsubscribe();
       this.subscription = undefined;
       this.historylistService.eventReset();
-  }
+    }
   }
 }

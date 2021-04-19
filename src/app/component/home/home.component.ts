@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { LoginService } from '../../service/login.service';
 import {IfUserinfo} from '../../interface/userinfo';
 import {RestapiService} from '../../service/restapi.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -23,6 +24,7 @@ export class HomeComponent implements OnInit {
   constructor(private auth: AuthService
     ,private loginService : LoginService
     , private restapi : RestapiService
+    , private router : Router
     ) {}
 
   /**
@@ -35,6 +37,14 @@ export class HomeComponent implements OnInit {
   private subscription!: Subscription;
 
   ngOnInit() {
+
+    this.subscription = this.auth.loggedIn.subscribe(userdata=>{
+      if (!userdata.isLogin){
+        console.debug("HomeComponent logout ");
+        this.router.navigate(['/login']);
+      }
+    })
+
     this.getData();
   }
 
@@ -61,7 +71,9 @@ export class HomeComponent implements OnInit {
     //});
 
   }
-
+  ngOnDestroy(){
+    console.debug('ngOnDestroy--!!');
+    this.subscription.unsubscribe();
     //--------------------------------------------------------
-
+  }
 }

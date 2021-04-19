@@ -11,7 +11,6 @@ import {MessageService} from './service/message.service';
 import {Alert} from './interface/Alert';
 import {ConstType} from './component/common/ConstType';
 
-
 @Component({
   //moduleId: module.id,
   selector: 'app-root',
@@ -38,7 +37,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   messages : Alert[] = [];
 
   constructor(public auth: AuthService
-    , private cdr: ChangeDetectorRef
+    ,private cdr: ChangeDetectorRef
     ,private loginService : LoginService
     ,private messageService : MessageService
     ) {
