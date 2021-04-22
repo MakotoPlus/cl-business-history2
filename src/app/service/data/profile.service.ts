@@ -21,7 +21,7 @@ export class ProfileService {
    */
   private subscription!: Subscription;
 
-  //user : User;
+  user : User;
 
   //profileObservable: BehaviorSubject<ProfileData> = new BehaviorSubject<ProfileData>(new ProfileData());
   profileObservable: Subject<ProfileData> = new Subject<ProfileData>();
@@ -30,33 +30,35 @@ export class ProfileService {
     ,private messageService : MessageService
     ,private restapi : RestapiService
   ) {
-    //this.getUser();
+    this.getUser();
   }
 
-  /*
+
   private getUser(){
     this.subscription = this.auth.loggedIn.subscribe((login : User)=>{
       this.user = login;
-        if (login.isLogin){
-          this.getProfileData();
-          console.debug("ProfileService::subscribe.login!!");
-          console.debug(login);
-        }else{
-          console.debug("ProfileService::subscribe.logoff!!");
-        }
+      if (login.isLogin){
+        this.getProfileData();
+        console.debug("ProfileService::subscribe.login!!");
+        console.debug(login);
+      }else{
+        console.debug("ProfileService::subscribe.logoff!!");
+      }
     });
   }
-  */
+
   getProfileData(){
-    let ret = this.restapi.getUser().subscribe(
-      result => {
-        console.debug('profile getUser');
-        console.debug(result);
-        this.profileObservable.next(result);
-      },error =>{
-        this.messageService.Output(ConstType.TYPE.DANGER, 'ユーザ情報 取得失敗');
-        console.error(`ユーザ情報 取得失敗:${error.message}`);
-      }
-    )
+    if (this.user.isLogin){
+      let ret = this.restapi.getUser().subscribe(
+        result => {
+          console.debug('ProfileService::profile getUser');
+          console.debug(result);
+          this.profileObservable.next(result);
+        },error =>{
+          this.messageService.Output(ConstType.TYPE.DANGER, 'ユーザ情報 取得失敗');
+          console.error(`ユーザ情報 取得失敗:${error.message}`);
+        }
+      )
+    }
   }
 }

@@ -56,7 +56,7 @@ export class ProfileComponent implements OnInit {
   getProfile(){
     this.profileSubscription = this.profileService
       .profileObservable.subscribe((profileData: ProfileData)=>{
-      console.debug('getProfile.......data');
+      console.debug('ProfileComponent::getProfile.......data');
       console.debug(profileData);
       this.setUser(profileData);
     })
@@ -111,7 +111,7 @@ export class ProfileComponent implements OnInit {
       this.given_name_kana.setValue(r.given_name_kana);
     }
     if ('birthday' in r ){
-      console.log(r.birthday)
+      console.debug(r.birthday)
       if (r.birthday){
         this.model = {
           year : r.birthday.year
@@ -136,7 +136,7 @@ export class ProfileComponent implements OnInit {
       this.date_joined.setValue(r.date_joined);
     }
     if ('pr' in r ){
-      console.log(r.pr)
+      console.debug(r.pr)
       this.pr.setValue(r.pr);
     }
     if ('email' in r){
@@ -154,16 +154,16 @@ export class ProfileComponent implements OnInit {
     console.debug(this.fmGroup.value);
     this.modalService.confirm('Profile', '変更を保存してよろしいですか？').then( result => {
       if (!result){ return;}
-      console.debug('submit result' + result);
+      console.debug('ProfileComponent::submit result' + result);
       this.restapi.putUser(this.fmGroup.value).subscribe(
         result=>{
-          console.debug('submit-result');
+          console.debug('ProfileComponent::submit-result');
           console.debug(result);
           this.messageService.Output(ConstType.TYPE.SUCCESS, 'Profileを更新しました');
         }
         ,error =>{
           this.messageService.Output(ConstType.TYPE.DANGER, 'Profile 更新失敗');
-          console.log('ProfileComponent:onSubmitConfirmation:error');
+          console.debug('ProfileComponent:onSubmitConfirmation:error');
           console.error(`Profile 更新失敗:${error.message}`);
         }
       )
@@ -171,7 +171,7 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    console.debug('this.profileSubscription.unsubscribe()');
+    console.debug('ProfileComponent::this.profileSubscription.unsubscribe()');
     this.profileSubscription.unsubscribe();
     //console.debug('this.subscription.unsubscribe()');
     //this.subscription.unsubscribe();

@@ -5,7 +5,7 @@ import { map, tap, catchError } from 'rxjs/operators';
 import Amplify, { Auth, auth0SignInButton } from 'aws-amplify';
 import { SignUpParams } from '@aws-amplify/auth/lib-esm/types';
 import { environment } from './../../environments/environment';
-import { CognitoUserSession } from 'amazon-cognito-identity-js';
+import { CognitoUser, CognitoUserSession } from 'amazon-cognito-identity-js';
 //import { FunctionCall } from '@angular/compiler';
 //import {AuthenticationDetails, CognitoUser, CognitoIdToken, CognitoUserSession, CognitoUserAttribute} from "amazon-cognito-identity-js";
 import { IfUserinfo } from './../interface/userinfo';
@@ -85,8 +85,8 @@ export class AuthService {
   public signIn(email, password): Observable<any> {
     return from(Auth.signIn(email, password)).pipe(
       tap((result) => {
-        this.loginUser.set(true, result);
-        this.loggedIn.next(this.loginUser);
+        this.loginUser.set(true, result, this.loggedIn, this.router);
+        //this.loggedIn.next(this.loginUser);
           //this.loggedIn.next(true)
       })
     );
@@ -103,13 +103,13 @@ export class AuthService {
     return Auth.currentSession()
       .then(session => {
         /**
-        console.log('getIdToken::then');
         console.log(session);
         console.log('getIdToken::payload');
         let payload = session.getIdToken().payload;
         console.log(payload);
          */
-        console.log(session);
+        console.debug('getIdToken::then');
+        console.debug(session);
         this.session = session;
         this.tokein = session.getIdToken().getJwtToken();
         return this.tokein;
@@ -149,8 +149,8 @@ export class AuthService {
     return from(Auth.currentAuthenticatedUser()).pipe(
       map(result => {
         //console.log(result);
-        this.loginUser.set(true, result);
-        this.loggedIn.next(this.loginUser);
+        this.loginUser.set(true, result, this.loggedIn);
+        //this.loggedIn.next(this.loginUser);
         //this.loggedIn.next(true);
         return true;
       }),
@@ -241,6 +241,18 @@ export class AuthService {
 
   /** アカウント削除 */
   public deleteUser(){
+    //session = Auth.currentSession();
+    this.loginUser.cognitoUser.deleteUser((err, result) => {
+      if (err){
+        console.error(err);
+        this.messageService.Output(ConstType.TYPE.DANGER, `アカウントを削除が失敗しました エラー詳細:${err}`);
+      }else{
+        this.messageService.Output(ConstType.TYPE.SUCCESS, 'アカウントを削除しました');
+        console.debug(result);
+      }
+      //ログアウトへ
+      this.signOut();
+    });
   }
 
   /** ログアウト */
@@ -249,12 +261,16 @@ export class AuthService {
       result => {
         console.debug('signOut');
         console.debug(result);
+        this.tokein = ""
+        this.session = null
         this.loginUser.clear();
         this.loggedIn.next(this.loginUser);
         this.router.navigate(['/login']);
       },
       error => {
         console.log('signOut()Error!!');
+        this.tokein = ""
+        this.session = null
         this.loginUser.clear();
         console.log(error);
       }

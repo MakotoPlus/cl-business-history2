@@ -34,7 +34,7 @@ export class UserinfoComponent implements OnInit {
       if (login){
         //
         // ログイン情報取得
-        console.debug("UserinfoComponent::subscribe.login!!")
+        console.debug(`UserinfoComponent::subscribe.login=${login.isLogin}`)
         this.loginuser = this.auth.loginUser;
         this.loggedIn = login.isLogin;
         this.form_email = this.loginuser.email;

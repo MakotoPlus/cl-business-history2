@@ -22,7 +22,7 @@ export class HistorylistService {
 
 
   // ログインユーザ情報
-  loginUser : User;
+  user : User;
   // 履歴データ
   //historyData : HistoryData[] = [];
 
@@ -35,6 +35,19 @@ export class HistorylistService {
   ) {
     console.debug('HistorylistService::constructor()--------------');
     //this.initHistoryData();
+    this.getUser();
+  }
+  private getUser(){
+    this.subscription = this.auth.loggedIn.subscribe((login : User)=>{
+      this.user = login;
+      if (login.isLogin){
+        this.getHistory();
+        console.debug("HistorylistService::subscribe.login!!");
+        console.debug(login);
+      }else{
+        console.debug("HistorylistService::subscribe.logoff!!");
+      }
+    });
   }
 
   /*
@@ -71,21 +84,23 @@ export class HistorylistService {
   */
 
   getHistory(index : number = 0){
-    let ret = this.restapi.getHistoryList(index).subscribe(result =>{
-        console.debug('getHistory');
-        let HistoryDatas : HistoryData[] =[];
-        for ( let i = 0; i < result.length; i++){
-          let hd : HistoryData = new HistoryData();
-          hd.setData(result[i]);
-          HistoryDatas.push(hd);
-        }
-        this.historyObservable.next(HistoryDatas);
-      },error =>{
-        this.messageService.Output(ConstType.TYPE.DANGER, '業務経歴一覧 取得失敗');
-        console.error(`業務経歴一覧 取得失敗:${error.message}`);
-    });
-    console.debug('restapi.getHistoryList() Return');
-    console.debug(ret);
+    if (this.user.isLogin){
+        let ret = this.restapi.getHistoryList(index).subscribe(result =>{
+          console.debug('getHistory');
+          let HistoryDatas : HistoryData[] =[];
+          for ( let i = 0; i < result.length; i++){
+            let hd : HistoryData = new HistoryData();
+            hd.setData(result[i]);
+            HistoryDatas.push(hd);
+          }
+          this.historyObservable.next(HistoryDatas);
+        },error =>{
+          this.messageService.Output(ConstType.TYPE.DANGER, '業務経歴一覧 取得失敗');
+          console.error(`業務経歴一覧 取得失敗:${error.message}`);
+      });
+      console.debug('restapi.getHistoryList() Return');
+      console.debug(ret);
+    }
   }
 
 
@@ -96,7 +111,6 @@ export class HistorylistService {
    this.historyUpdateSubject  = new AsyncSubject<HistoryData>();
    //this.getHistory(0);
   }
-
   //
   // 業務履歴更新画面へデータ引渡メソッド
   showHistoryDetail(historyData : HistoryData){
@@ -104,5 +118,4 @@ export class HistorylistService {
     this.historyUpdateSubject.next(historyData);
     this.historyUpdateSubject.complete();
   }
-
 }

@@ -54,16 +54,16 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
       //ユーザ情報取得
       //this.auth.getData().subscribe(result => {
       //  this.username = result.attributes.family_name + ' ' + result.attributes.given_name;
-      console.log('AppComponent::ngOnInit');
-      console.log(result);
+      console.debug('AppComponent::ngOnInit');
+      console.debug(result);
       if (result){
-        console.log("AppComponent::isAuthenticated.login!!")
+        console.debug(`AppComponent::isAuthenticated.login=${result}!!`)
         //this.loginuser = result;
-        console.log( this.auth.loginUser)
+        console.debug( this.auth.loginUser)
         this.loggedIn = result;
         this.logoutMessage = true;
       }else{
-        console.log("AppComponent::logout....")
+        console.debug("AppComponent::logout....")
         this.auth.loginUser.clear();
         this.loggedIn = false;
         this.logoutMessage = false;
@@ -86,13 +86,13 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
     */
     this.subscriptionLogin = this.auth.loggedIn.subscribe((login : User)=>{
       if (login.isLogin){
-        console.log("AppComponent::subscribe.login!!")
+        console.debug("AppComponent::subscribe.login!!")
         this.auth.loginUser = login;
-        console.log( this.auth.loginUser)
+        console.debug( this.auth.loginUser)
         this.loggedIn = login.isLogin;
         this.logoutMessage = true;
       }else{
-        console.log("AppComponent::subscribe.logout....")
+        console.debug("AppComponent::subscribe.logout....")
         this.auth.loginUser.clear();
         this.loggedIn = false;
         if ( this.logoutMessage ){
@@ -105,7 +105,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     this.messageSubscription = this.messageService.messageState.subscribe((message:Alert)=>{
       this.messages.push(message);
-      console.log(`Message output:${message}`);
+      console.debug(`Message output:${message}`);
     });
 
     //--------------------------------------------------------

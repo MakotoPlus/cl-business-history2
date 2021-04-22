@@ -1,1 +1,27 @@
-<p>ユーザ削除は現在工事中</p>
+<div class="container">
+  <form [formGroup]="fmGroup" (ngSubmit)="onSubmit()">
+    <div class="form-group text-left">
+      <label>メールアドレス</label>
+      <input type="email" class="form-control" placeholder="Enter email"
+        formControlName="email" />
+      <div *ngIf="email.invalid && (email.dirty || email.touched)"
+          class="alert alert-danger">
+          <div *ngIf="email.errors.required">
+            この項目は必須です
+          </div>
+          <div *ngIf="email.errors.email">
+            メールアドレスを入力して下さい
+          </div>
+          <div *ngIf="email.errors.emailmatch">
+            メールアドレスが一致しません
+          </div>
+      </div>
+      <div>
+        アカウントを削除すると全てのデータが破棄されます。
+      </div>
+      <div>
+        <button type="submit" class="btn btn-primary" [disabled]="fmGroup.invalid">User Delete</button>
+      </div>
+    </div>
+  </form>
+</div>

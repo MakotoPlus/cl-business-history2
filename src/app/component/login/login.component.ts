@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
       result => {
         console.debug('onSubmitLogin() Success');
         console.debug(result);
-        this.router.navigate(['/']);
+        //this.router.navigate(['/']);
       },
       error => {
         if ( error['code'] == 'InvalidParameterException' ||
