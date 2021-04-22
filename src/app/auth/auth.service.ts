@@ -85,9 +85,8 @@ export class AuthService {
   public signIn(email, password): Observable<any> {
     return from(Auth.signIn(email, password)).pipe(
       tap((result) => {
+        console.debug("AuthService::signIn---------------" );
         this.loginUser.set(true, result, this.loggedIn, this.router);
-        //this.loggedIn.next(this.loginUser);
-          //this.loggedIn.next(true)
       })
     );
   }
@@ -95,7 +94,8 @@ export class AuthService {
   /** ログインユーザ情報の取得 */
   public getData(): Observable<any> {
     //public getData(): Observable<CognitoUserSession> {
-    return from(Auth.currentAuthenticatedUser());
+      console.debug("AuthService::getData---------------" );
+      return from(Auth.currentAuthenticatedUser());
   }
 
   /** idtokenを取得 */
@@ -149,9 +149,10 @@ export class AuthService {
     return from(Auth.currentAuthenticatedUser()).pipe(
       map(result => {
         //console.log(result);
-        this.loginUser.set(true, result, this.loggedIn);
-        //this.loggedIn.next(this.loginUser);
-        //this.loggedIn.next(true);
+        console.debug("AuthService::isAuthenticated---------------" );
+        // ログイン時に二重でイベントが発火するのでイベントを発生させない
+        this.loginUser.set(true, result);
+        //this.loginUser.set(true, result, this.loggedIn);
         return true;
       }),
       catchError(error => {

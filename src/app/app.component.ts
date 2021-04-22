@@ -84,6 +84,10 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
     //});
 
     */
+
+    //
+    // ログイン時に二重で業務一覧ファイルが読込まれてしまうのでコメントアウト
+    /****************
     this.subscriptionLogin = this.auth.loggedIn.subscribe((login : User)=>{
       if (login.isLogin){
         console.debug("AppComponent::subscribe.login!!")
@@ -101,7 +105,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
         }
       }
     });
-
+    */
 
     this.messageSubscription = this.messageService.messageState.subscribe((message:Alert)=>{
       this.messages.push(message);

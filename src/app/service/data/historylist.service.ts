@@ -41,7 +41,8 @@ export class HistorylistService {
     this.subscription = this.auth.loggedIn.subscribe((login : User)=>{
       this.user = login;
       if (login.isLogin){
-        this.getHistory();
+        //なんもしない
+        //this.getHistory();
         console.debug("HistorylistService::subscribe.login!!");
         console.debug(login);
       }else{
@@ -85,8 +86,8 @@ export class HistorylistService {
 
   getHistory(index : number = 0){
     if (this.user.isLogin){
-        let ret = this.restapi.getHistoryList(index).subscribe(result =>{
-          console.debug('getHistory');
+      console.debug('HistorylistService::getHistory restapi call');
+      let ret = this.restapi.getHistoryList(index).subscribe(result =>{
           let HistoryDatas : HistoryData[] =[];
           for ( let i = 0; i < result.length; i++){
             let hd : HistoryData = new HistoryData();

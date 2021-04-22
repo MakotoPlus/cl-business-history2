@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
   username: String;
   errmessage : string;
-  user_info : IfUserinfo;
+  user : IfUserinfo;
 
 
   constructor(private auth: AuthService
@@ -42,18 +42,28 @@ export class HomeComponent implements OnInit {
       if (!userdata.isLogin){
         console.debug("HomeComponent logout ");
         this.router.navigate(['/login']);
+      }else{
+        console.debug(userdata);
+        //this.user.family_name = result.attributes.family_name;
+        this.username = userdata.user_name
+        this.user=userdata;
+        //this.loginService.onNotifySharedDataChanged(String(this.username));
+        //this.loginService.onNotifySharedDataChanged(result);
       }
     })
 
-    this.getData();
+    //this.getData();
   }
 
+  // ログイン時に重複して業務一覧データを取得してしまうためコメントアウトして
+  // loginイベントから取得するよう変更
+  /*
   getData(): void {
     this.auth.getData().subscribe(
       result => {
         console.debug('HomeComponent::getData()');
         console.debug(result);
-        //this.user_info.family_name = result.attributes.family_name;
+        //this.user.family_name = result.attributes.family_name;
         this.username = result.attributes.family_name + ' ' + result.attributes.given_name;
         //this.loginService.onNotifySharedDataChanged(String(this.username));
         //this.loginService.onNotifySharedDataChanged(result);
@@ -71,6 +81,8 @@ export class HomeComponent implements OnInit {
     //});
 
   }
+  */
+
   ngOnDestroy(){
     console.debug('ngOnDestroy--!!');
     this.subscription.unsubscribe();

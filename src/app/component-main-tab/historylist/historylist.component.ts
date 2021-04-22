@@ -28,6 +28,7 @@ export class HistorylistComponent implements OnInit {
    * @memberof Sample1Component
    */
    private subscription!: Subscription;
+   private subscriptionUser!: Subscription;
 
   /**
    * 親コンポーネントに対してイベントを発火するためのプロパティ
@@ -37,6 +38,7 @@ export class HistorylistComponent implements OnInit {
    @Output() event = new EventEmitter<String>();
 
   historyData : HistoryData[] = [];
+  user : User;
 
   constructor(
     private auth: AuthService
@@ -46,8 +48,9 @@ export class HistorylistComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.historylistService.getHistory();
+    //this.historylistService.getHistory();
     this.getHistory();
+    this.getUser();
   }
 
   getHistory():void{
@@ -65,6 +68,21 @@ export class HistorylistComponent implements OnInit {
     }));
   }
 
+  private getUser(){
+    this.subscriptionUser = this.auth.loggedIn.subscribe((login : User)=>{
+      this.user = login;
+      if (login.isLogin){
+        //なんもしない
+        //this.getHistory();
+        this.historylistService.getHistory();
+        console.debug("HistorylistComponent::subscribe.login!!");
+        console.debug(login);
+      }else{
+        console.debug("HistorylistComponent::subscribe.logoff!!");
+      }
+    });
+  }
+
 
   ClickLink(index){
     console.debug('ClickLink-index[' + index + ']')
@@ -75,6 +93,7 @@ export class HistorylistComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.subscriptionUser.unsubscribe();
     console.debug('HistorylistComponent::ngOnDestroy');
   }
 
