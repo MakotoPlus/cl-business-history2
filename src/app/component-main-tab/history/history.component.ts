@@ -598,16 +598,16 @@ export class HistoryComponent implements OnInit {
       //
       // 開発中だからだけどゴミデータがあるので画面表示以外のデータは保存しないようにする
       Object.keys(historyData.process_group_list).forEach((key)=>{
-        console.debug(`checkBoxItem`);
-        console.debug(historyData.process_group_list[key]);
-        this.ProcessCheckboxData.forEach(checkBoxData=>{
-          if ( checkBoxData.key == historyData.process_group_list[key]){
-            if ( historyData.process_group_list[key]){
+        console.debug(`checkBoxItem key=${key} value=${historyData.process_group_list[key]}`);
+        if (historyData.process_group_list[key]){
+          this.ProcessCheckboxData.forEach(checkBoxData=>{
+            if (key == checkBoxData.key ){
+              console.debug(`checkBoxItem Add key=${key}`);
               const checkArray: FormArray = this.fmGroup.get('process_group_list') as FormArray;
               checkArray.push(new FormControl(key));
             }
-          }
-        });
+          });
+        }
       });
 
       //
