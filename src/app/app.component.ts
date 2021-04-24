@@ -50,6 +50,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   ngOnInit() {
+    //
+    //isAuthenticated は、ログオフ時にイベント発生しない
     this.subscription = this.auth.isAuthenticated().subscribe(result => {
       //ユーザ情報取得
       //this.auth.getData().subscribe(result => {
@@ -70,24 +72,8 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
       }
 
     });
-    /*
-    this.subscription = this.auth.isAuthenticated().subscribe(result => {
-      //this.loggedIn = result;
-      //ユーザ情報取得
-      //this.auth.getData().subscribe(result => {
-      //  this.username = result.attributes.family_name + ' ' + result.attributes.given_name;
-      console.log('AppComponent::ngOnInit');
-      console.log(result);
-    });
-    //this.auth.loginState.subscribe((login : boolean)=>{
-    //  console.log("AppComponent::login change " + login );
-    //});
-
-    */
-
     //
-    // ログイン時に二重で業務一覧ファイルが読込まれてしまうのでコメントアウト
-    /****************
+    // ログオフ時のイベントのみキャッチする。
     this.subscriptionLogin = this.auth.loggedIn.subscribe((login : User)=>{
       if (login.isLogin){
         console.debug("AppComponent::subscribe.login!!")
@@ -105,7 +91,7 @@ export class AppComponent implements OnInit, OnDestroy, AfterViewChecked {
         }
       }
     });
-    */
+
 
     this.messageSubscription = this.messageService.messageState.subscribe((message:Alert)=>{
       this.messages.push(message);

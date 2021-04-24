@@ -5,3 +5,8 @@
 .example-month-picker .mat-calendar-arrow {
   display: none;
 }
+
+.custom_scroll{
+  overflow-y : scroll;
+  height: 650px;
+}

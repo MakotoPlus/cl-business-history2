@@ -1,18 +1,4 @@
-<!--
-          <mat-form-field appearance="fill">
-            <mat-label>Month and Year</mat-label>
-            <input matInput [matDatepicker]="dp" [formControl]="date">
-            <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-            <mat-datepicker #dp
-                            startView="multi-year"
-                            (yearSelected)="chosenYearHandler($event)"
-                            (monthSelected)="chosenMonthHandler($event, dp)"
-                            panelClass="example-month-picker">
-            </mat-datepicker>
-          </mat-form-field>
--->
-          <hr>
-<div class="container">
+<div class="container custom_scroll">
   <form [formGroup]="fmGroup" (ngSubmit)="onSubmit()">
     <div>
       <button type="button" class="btn btn-dark" [disabled]="(fmGroup.invalid || isDisable )" (click)="InsertClick()">Insert</button>

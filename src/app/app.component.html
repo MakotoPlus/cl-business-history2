@@ -10,7 +10,7 @@
 </head>
 
 <nav class="sticky-top navbar navbar-dark bg-dark navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="/index.html">Business History Report</a>
+  <a class="navbar-brand" [routerLink]="['/home']">Business History Report</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse"
     data-target="#navbarText" aria-controls="navbarText"
     aria-expanded="false" aria-label="Toggle navigation">
@@ -33,6 +33,7 @@
             {{auth.loginUser.user_name}}<span class="sr-only">(current)</span>
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" [routerLink]="['/home']">Home</a>
           <a class="dropdown-item" [routerLink]="['/userinfo']">Login Info</a>
           <a class="dropdown-item" (click)="onClickLogout()">Sign Out</a>
           <a class="dropdown-item" [routerLink]="['/userdelete']">User Delete</a>

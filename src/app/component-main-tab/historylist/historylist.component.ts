@@ -39,6 +39,12 @@ export class HistorylistComponent implements OnInit {
 
   historyData : HistoryData[] = [];
   user : User;
+  page : number = 0;
+  try_page : number = 0;
+  isNextPage : boolean = true;
+
+  // 現在のページデータ数 ここ変更する場合Lambdaも変更する必要あるよ
+  data_count : number = 10;
 
   constructor(
     private auth: AuthService
@@ -60,6 +66,15 @@ export class HistorylistComponent implements OnInit {
         console.debug('HistorylistComponent::undefined');
         return;
       }
+      // 次のページ計算
+      if ( result.length > 0 ){
+        this.page = this.try_page;
+        this.try_page += 1;
+      }
+      // 次のデータ取得表示設定フラグ
+      this.isNextPage = ( result.length >= this.data_count )
+      console.debug(`isNexPage=${this.isNextPage}`);
+
       result.forEach( r =>{
         console.debug('push----------------------')
         console.debug(r);
@@ -83,7 +98,15 @@ export class HistorylistComponent implements OnInit {
     });
   }
 
+  ClickNextPage(){
+    //次のデータ取得処理
+    console.debug('ClickNextPage');
+    this.historylistService.getHistory(this.try_page);
+  }
 
+
+
+  // リストクリック時の新規/更新ページへデータ連携
   ClickLink(index){
     console.debug('ClickLink-index[' + index + ']')
     console.debug(this.historyData[index]);

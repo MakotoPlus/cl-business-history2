@@ -61,4 +61,7 @@
     </tr>
     </tbody>
   </table>
+  <div *ngIf=isNextPage style="text-align: center;">
+      <button type="button" class="btn btn-link" (click)="ClickNextPage()">さらに{{data_count}}件表示する</button>
+  </div>
 </div>
