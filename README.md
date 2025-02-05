@@ -14,10 +14,37 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
 
+AWS Profile yahoo(2024/04 Acctount)
 
 POC環境用のbuild方法
 `ng build -c poc'
 
+環境構築
+
+```
+node 16.20.1
+npm install --legacy-peer-deps
+npm run start
+```
+
+下記ファイルに環境内容設定
+src/environments/environment.ts
+この設定は
+angular.jsonで振分けられている poc, dev, prodocution 実際pocしか動かしていないから他は保証ない
+
+Deploy用のBuild
+```
+ng build -c poc
+ng build -c dev
+ng build -c prd
+```
+
+dist/cl-business-history2フォルダにコンパイル後のファイルが出来るのでS3へPushする(手動)
+```
+cd dist/cl-business-history2
+aws s3 cp . s3://dev-business-history/ --recursive --profile yahoo
+
+```
 
 ## Running unit tests
 
